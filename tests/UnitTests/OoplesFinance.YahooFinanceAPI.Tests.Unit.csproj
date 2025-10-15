@@ -9,7 +9,7 @@
 
   <ItemGroup>
 	<DotNetCliToolReference Include="JetBrains.dotCover.CommandLineTools" Version="2023.2.2" />
-    <PackageReference Include="coverlet.msbuild" Version="6.0.2">
+    <PackageReference Include="coverlet.msbuild" Version="6.0.4">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

@@ -2549,6 +2549,7 @@ public sealed class YahooClientTests : IDisposable
     public async Task CreateCrumbHelpInstance_ThrowsException_WhenFetchCrumbFailed()
     {
         // Arrange
+        OoplesFinance.YahooFinanceAPI.Helpers.CrumbHelper.Reset();
         var mockHandler = new Mock<HttpMessageHandler>();
         mockHandler.SetupRequest(HttpMethod.Get, "https://query1.finance.yahoo.com/v1/test/getcrumb")
             .ReturnsResponse(HttpStatusCode.NotFound, "");

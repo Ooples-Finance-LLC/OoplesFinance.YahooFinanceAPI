@@ -1,10 +1,11 @@
-﻿// CrumbHelper.cs
+// CrumbHelper.cs
 //  Andrew Baylis
 //  Created: 29/10/2024
 
 #region using
 
 using System.Runtime.CompilerServices;
+using System.Net;
 
 #endregion
 
@@ -19,12 +20,19 @@ internal sealed class CrumbHelper
     private static CrumbHelper? _instance;
 
     internal static HttpMessageHandler? handler;
+    private static HttpClientHandler? _clientHandler;
 
     #endregion
 
+    static CrumbHelper()
+    {
+#if NET48
+        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+#endif
+    }
+
     private CrumbHelper()
     {
-        handler = GetClientHandler();
         Crumb = string.Empty;
     }
 
@@ -49,7 +57,8 @@ internal sealed class CrumbHelper
 
     public static HttpClient GetHttpClient()
     {
-        HttpClient client = new(handler ?? GetClientHandler());
+        var h = handler ?? GetClientHandler();
+        HttpClient client = new(h, disposeHandler: false);
 
         client.DefaultRequestHeaders.Add("User-Agent",
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
@@ -77,13 +86,26 @@ internal sealed class CrumbHelper
 
     private static HttpClientHandler GetClientHandler()
     {
-        return YahooClient.IsThrottled
+        if (_clientHandler != null) return _clientHandler;
+
+        var h = YahooClient.IsThrottled
             ? new DownloadThrottleQueueHandler(40, TimeSpan.FromMinutes(1), 4) //40 calls in a minute, no more than 4 simultaneously
-            : new HttpClientHandler()
-            {
-                AllowAutoRedirect = true,
-                AutomaticDecompression = DecompressionMethods.All
-            };
+            : new HttpClientHandler();
+
+        if (h is HttpClientHandler httpClientHandler)
+        {
+            httpClientHandler.AllowAutoRedirect = true;
+            httpClientHandler.UseCookies = true; // Ensure cookies are used
+            // net48 doesn't support DecompressionMethods.All (introduced in .NET 7)
+#if NET48
+            httpClientHandler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+#else
+            httpClientHandler.AutomaticDecompression = DecompressionMethods.All;
+#endif
+        }
+        
+        _clientHandler = h;
+        return h;
     }
 
     #endregion
@@ -92,9 +114,9 @@ internal sealed class CrumbHelper
 
     public async Task SetCrumbAsync()
     {
-        var client = GetHttpClient();
+        using var client = GetHttpClient();
 
-        var crumbResponse = await client.GetAsync("https://query1.finance.yahoo.com/v1/test/getcrumb");
+        using var crumbResponse = await client.GetAsync("https://query1.finance.yahoo.com/v1/test/getcrumb");
 
         if (crumbResponse.IsSuccessStatusCode)
         {
@@ -111,9 +133,17 @@ internal sealed class CrumbHelper
 
     #region Internal Methods
 
-    internal void Destroy()
+    internal static void Destroy()
     {
         _instance = null;
+    }
+
+    internal static void Reset()
+    {
+        _instance = null;
+        handler = null;
+        _clientHandler?.Dispose();
+        _clientHandler = null;
     }
 
     #endregion
@@ -139,7 +169,12 @@ internal class DownloadThrottleQueueHandler : HttpClientHandler
         _throttleRate = new SemaphoreSlim(maxPerPeriod, maxPerPeriod);
         _maxPeriod = maxPeriod;
         AllowAutoRedirect = true;
+        // net48 doesn't support DecompressionMethods.All (introduced in .NET 7)
+#if NET48
+        AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+#else
         AutomaticDecompression = DecompressionMethods.All;
+#endif
     }
 
     #region Override Methods

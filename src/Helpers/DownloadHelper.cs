@@ -90,7 +90,7 @@ internal static class DownloadHelper
             }
             else
             {
-                (await CrumbHelper.GetInstance(false)).Destroy();
+                CrumbHelper.Destroy();
 
                 throw response.StatusCode switch
                 {

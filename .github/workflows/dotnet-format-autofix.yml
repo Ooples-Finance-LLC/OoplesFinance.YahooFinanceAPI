@@ -1,0 +1,207 @@
+name: Auto-Fix Formatting (dotnet format)
+
+on:
+  schedule:
+    - cron: '15 3 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: dotnet-format-autofix
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  AUTOFIX_REVIEWERS: ${{ vars.AUTOFIX_REVIEWERS }}
+
+jobs:
+  format:
+    name: Run dotnet format and open PR
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET 8.0
+        uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore OoplesFinance.YahooFinanceAPI.sln
+
+      - name: Run dotnet format
+        run: |
+          dotnet tool update -g dotnet-format || dotnet tool install -g dotnet-format
+          export PATH="$PATH:$HOME/.dotnet/tools"
+          dotnet format OoplesFinance.YahooFinanceAPI.sln
+
+      - name: Detect changes
+        id: changes
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Configure git
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit changes
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git add -A
+          git commit -m "chore: apply dotnet format"
+
+      - name: Push branch
+        if: steps.changes.outputs.has_changes == 'true'
+        env:
+          AUTOFIX_PAT: ${{ secrets.AUTOFIX_PAT }}
+        shell: bash
+        run: |
+          BRANCH="automation/dotnet-format-autofix"
+          git checkout -B "$BRANCH"
+
+          if [ -n "$AUTOFIX_PAT" ]; then
+            git push "https://x-access-token:${AUTOFIX_PAT}@github.com/${GITHUB_REPOSITORY}.git" "$BRANCH" --force-with-lease
+          else
+            git push origin "$BRANCH" --force-with-lease
+            echo "::warning::AUTOFIX_PAT is not set. The PR may not trigger CI automatically when created by GitHub Actions."
+          fi
+
+      - name: Create or update PR
+        if: steps.changes.outputs.has_changes == 'true'
+        id: pr
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const head = `${owner}:automation/dotnet-format-autofix`;
+            const base = 'master';
+
+            const title = 'chore: automated dotnet format';
+            const body = [
+              'Automated formatting maintenance PR.',
+              '',
+              '- Runs `dotnet format OoplesFinance.YahooFinanceAPI.sln` on a schedule and opens/updates this PR.',
+              '- Intended to keep formatting drift from accumulating between feature PRs.',
+              '',
+              'If CI does not run automatically, ensure `AUTOFIX_PAT` is configured as a repository secret with `repo` and `workflow` scopes.'
+            ].join('\n');
+
+            const existing = await github.rest.pulls.list({
+              owner,
+              repo,
+              state: 'open',
+              head,
+              base
+            });
+
+            if (existing.data.length > 0) {
+              const pr = existing.data[0];
+              core.info(`Updating existing PR #${pr.number}`);
+              await github.rest.pulls.update({
+                owner,
+                repo,
+                pull_number: pr.number,
+                title,
+                body
+              });
+              core.setOutput('pull_number', String(pr.number));
+              return;
+            }
+
+            core.info('Creating new PR');
+            const created = await github.rest.pulls.create({
+              owner,
+              repo,
+              title,
+              head: 'automation/dotnet-format-autofix',
+              base,
+              body
+            });
+
+            core.setOutput('pull_number', String(created.data.number));
+
+            try {
+              await github.rest.issues.addLabels({
+                owner,
+                repo,
+                issue_number: created.data.number,
+                labels: ['chore', 'autofix', 'formatting']
+              });
+            } catch (e) {
+              core.warning(`Could not apply labels to PR #${created.data.number}: ${e.message}`);
+            }
+
+      - name: Request review and enable auto-merge
+        if: steps.changes.outputs.has_changes == 'true' && steps.pr.outputs.pull_number != ''
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v7
+        env:
+          PULL_NUMBER: ${{ steps.pr.outputs.pull_number }}
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const pull_number = Number(process.env.PULL_NUMBER);
+
+            if (!Number.isFinite(pull_number) || pull_number <= 0) {
+              core.warning(`Invalid PULL_NUMBER: ${process.env.PULL_NUMBER}`);
+              return;
+            }
+
+            const reviewers = (process.env.AUTOFIX_REVIEWERS || '')
+              .split(',')
+              .map(s => s.trim())
+              .filter(Boolean);
+
+            const requestedReviewers = reviewers.length > 0 ? reviewers : [owner];
+
+            try {
+              await github.rest.pulls.requestReviewers({
+                owner,
+                repo,
+                pull_number,
+                reviewers: requestedReviewers
+              });
+              core.info(`Requested review from: ${requestedReviewers.join(', ')}`);
+            } catch (e) {
+              core.warning(`Could not request reviewers for PR #${pull_number}: ${e.message}`);
+            }
+
+            try {
+              const pr = await github.rest.pulls.get({ owner, repo, pull_number });
+              const pullRequestId = pr.data.node_id;
+
+              await github.graphql(
+                `mutation EnableAutoMerge($pullRequestId: ID!, $mergeMethod: PullRequestMergeMethod!) {
+                  enablePullRequestAutoMerge(input: { pullRequestId: $pullRequestId, mergeMethod: $mergeMethod }) {
+                    pullRequest { number }
+                  }
+                }`,
+                { pullRequestId, mergeMethod: 'SQUASH' }
+              );
+
+              core.info(`Enabled auto-merge (SQUASH) for PR #${pull_number}`);
+            } catch (e) {
+              core.warning(`Could not enable auto-merge for PR #${pull_number}: ${e.message}`);
+            }
+
+      - name: No changes
+        if: steps.changes.outputs.has_changes == 'false'
+        run: echo "No formatting changes detected."

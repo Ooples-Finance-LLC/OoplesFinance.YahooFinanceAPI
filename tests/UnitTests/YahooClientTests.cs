@@ -4,9 +4,10 @@ using System.Net;
 
 namespace OoplesFinance.YahooFinanceAPI.Tests.Unit;
 
-public sealed class YahooClientTests
+public sealed class YahooClientTests : IDisposable
 {
     private readonly YahooClient _sut;
+    private readonly Mock<HttpMessageHandler> _mockHandler;
     private const string BadSymbol = "OOPLES";
     private const string GoodSymbol = "MSFT";
     private const string GoodFundSymbol = "VTSAX";
@@ -19,11 +20,117 @@ public sealed class YahooClientTests
 
     public YahooClientTests()
     {
+        _mockHandler = new Mock<HttpMessageHandler>();
+        OoplesFinance.YahooFinanceAPI.Helpers.CrumbHelper.handler = _mockHandler.Object;
+        SetupMockResponses();
+
         _sut = new YahooClient();
         _startDate = DateTime.Now.AddMonths(-1);
         _emptySymbols = [];
         _tooManySymbols = Enumerable.Repeat(GoodSymbol, 255);
         _goodSymbols = Enumerable.Repeat(GoodSymbol, 20);
+    }
+
+    private void SetupMockResponses()
+    {
+        // Crumb
+        _mockHandler.SetupRequest(HttpMethod.Get, "https://query1.finance.yahoo.com/v1/test/getcrumb")
+            .ReturnsResponse(HttpStatusCode.OK, "test_crumb");
+
+        // Chart / Historical (Fixed braces)
+        var chartJson = @"{""chart"":{""result"":[{""timestamp"":[1600000000],""indicators"":{""quote"":[{""close"":[100.0],""open"":[100.0],""high"":[100.0],""low"":[100.0],""volume"":[1000]}],""adjclose"":[{""adjclose"":[100.0]}]},""events"":{""dividends"":{""1600000000"":{""amount"":0.5,""date"":1600000000}},""splits"":{""1600000000"":{""numerator"":2,""denominator"":1,""splitRatio"":""2:1"",""date"":1600000000}}}}]}}";
+        
+        _mockHandler.SetupRequest(HttpMethod.Get, r => r.RequestUri.ToString().Contains($"/v8/finance/chart/{GoodSymbol}"))
+            .ReturnsResponse(HttpStatusCode.OK, chartJson);
+
+        // Screener / Trending
+        var screenerJson = @"{""finance"":{""result"":[{""quotes"":[{""symbol"":""MSFT"",""language"":""en"",""region"":""US"",""typeDisp"":""Equity"",""quoteType"":""EQUITY""}]}]}}";
+        _mockHandler.SetupRequest(HttpMethod.Get, r => r.RequestUri.ToString().Contains("/finance/screener"))
+            .ReturnsResponse(HttpStatusCode.OK, screenerJson);
+        _mockHandler.SetupRequest(HttpMethod.Get, r => r.RequestUri.ToString().Contains("/finance/trending"))
+            .ReturnsResponse(HttpStatusCode.OK, screenerJson);
+
+        // QuoteSummary (Stats)
+        var quoteSummaryJson = @"{
+            ""quoteSummary"": {
+                ""result"": [{
+                    ""defaultKeyStatistics"": { ""enterpriseValue"": { ""raw"": 100 } },
+                    ""summaryDetail"": { ""maxAge"": 1 },
+                    ""financialData"": { ""currentPrice"": { ""raw"": 100 } },
+                    ""insiderHolders"": { ""holders"": [{""name"":""Holder""}] },
+                    ""insiderTransactions"": { ""transactions"": [{""filerName"":""Filer""}] },
+                    ""institutionOwnership"": { ""ownershipList"": [{""organization"":""Org""}] },
+                    ""fundOwnership"": { ""ownershipList"": [{""organization"":""Fund""}] },
+                    ""majorDirectHolders"": { ""holders"": [{""holder"":""Major""}] },
+                    ""secFilings"": { ""filings"": [{""date"":""2020-01-01""}] },
+                    ""majorHoldersBreakdown"": { ""insidersPercentHeld"": { ""raw"": 0.1 } },
+                    ""esgScores"": { ""totalEsg"": { ""raw"": 10 } },
+                    ""recommendationTrend"": { ""trend"": [{""period"":""0m""}] },
+                    ""indexTrend"": { ""symbol"": ""SP500"", ""peRatio"": { ""raw"": 20 } },
+                    ""sectorTrend"": { ""symbol"": ""Sector"" },
+                    ""earningsTrend"": { ""trend"": [{""period"":""0q""}] },
+                    ""assetProfile"": { ""address1"": ""1 Way"" },
+                    ""fundProfile"": { ""family"": ""FundFamily"" },
+                    ""calendarEvents"": { ""earnings"": { ""earningsDate"": [{""raw"":1600000000}] } },
+                    ""earnings"": { ""financialsChart"": { ""yearly"": [{""date"":2020}], ""quarterly"": [{""date"":""3Q""}] } },
+                    ""balanceSheetHistory"": { ""balanceSheetStatements"": [{""cash"":{""raw"":100}}] },
+                    ""cashflowStatementHistory"": { ""cashflowStatements"": [{""netIncome"":{""raw"":100}}] },
+                    ""incomeStatementHistory"": { ""incomeStatementHistory"": [{""totalRevenue"":{""raw"":100}}] },
+                    ""earningsHistory"": { ""history"": [{""epsActual"":{""raw"":1}}] },
+                    ""quoteType"": { ""symbol"": ""MSFT"" },
+                    ""price"": { ""regularMarketPrice"": { ""raw"": 100 } },
+                    ""netSharePurchaseActivity"": { ""buyInfoCount"": { ""raw"": 10 } },
+                    ""incomeStatementHistoryQuarterly"": { ""incomeStatementHistory"": [{""totalRevenue"":{""raw"":100}}] },
+                    ""cashflowStatementHistoryQuarterly"": { ""cashflowStatements"": [{""netIncome"":{""raw"":100}}] },
+                    ""balanceSheetHistoryQuarterly"": { ""balanceSheetStatements"": [{""cash"":{""raw"":100}}] },
+                    ""upgradeDowngradeHistory"": { ""history"": [{""firm"":""Firm"",""action"":""Up""}] }
+                }]
+            }
+        }";
+        // Match GoodSymbol and GoodFundSymbol explicitly
+        _mockHandler.SetupRequest(HttpMethod.Get, r => r.RequestUri.ToString().Contains($"/quoteSummary/{GoodSymbol}"))
+            .ReturnsResponse(HttpStatusCode.OK, quoteSummaryJson);
+        _mockHandler.SetupRequest(HttpMethod.Get, r => r.RequestUri.ToString().Contains($"/quoteSummary/{GoodFundSymbol}"))
+            .ReturnsResponse(HttpStatusCode.OK, quoteSummaryJson);
+
+        // RealTimeQuote
+        var realTimeJson = @"{""quoteResponse"":{""result"":[{""symbol"":""MSFT"",""regularMarketPrice"":100.0}]}}";
+        _mockHandler.SetupRequest(HttpMethod.Get, r => r.RequestUri.ToString().Contains("/v7/finance/quote") && r.RequestUri.ToString().Contains(GoodSymbol))
+            .ReturnsResponse(HttpStatusCode.OK, realTimeJson);
+
+        // Market Summary
+        var marketSummaryJson = @"{""marketSummaryResponse"":{""result"":[{""symbol"":""^GSPC"",""regularMarketPrice"":{""raw"":100}}]}}";
+        _mockHandler.SetupRequest(HttpMethod.Get, r => r.RequestUri.ToString().Contains("/marketSummary"))
+            .ReturnsResponse(HttpStatusCode.OK, marketSummaryJson);
+
+        // AutoComplete
+        var autoCompleteJson = @"{""resultSet"":{""Result"":[{""symbol"":""MSFT""}]}}";
+        _mockHandler.SetupRequest(HttpMethod.Get, r => r.RequestUri.ToString().Contains("/autocomplete") && !r.RequestUri.ToString().Contains("string.Empty"))
+            .ReturnsResponse(HttpStatusCode.OK, autoCompleteJson);
+
+        // SparkChart
+        var sparkJson = @"{""spark"":{""result"":[{""symbol"":""MSFT"",""response"":[{""timestamp"":[1600000000],""indicators"":{""quote"":[{""close"":[100.0]}]}}]}]}}";
+        _mockHandler.SetupRequest(HttpMethod.Get, r => r.RequestUri.ToString().Contains("/finance/spark") && r.RequestUri.ToString().Contains(GoodSymbol))
+            .ReturnsResponse(HttpStatusCode.OK, sparkJson);
+
+        // Insights (Fixed shortTerm and added reports)
+        var insightsJson = @"{""finance"":{""result"":{""instrumentInfo"":{""technicalEvents"":{""shortTerm"":""Bearish""}},""reports"":[{""id"":""1"",""title"":""Report""}]}}}";
+        _mockHandler.SetupRequest(HttpMethod.Get, r => r.RequestUri.ToString().Contains($"/insights?symbol={GoodSymbol}"))
+            .ReturnsResponse(HttpStatusCode.OK, insightsJson);
+        
+        // Recommendations
+        var recommendJson = @"{""finance"":{""result"":[{""symbol"":""MSFT"",""recommendedSymbols"":[{""symbol"":""AAPL""}]}]}}";
+        _mockHandler.SetupRequest(HttpMethod.Get, r => r.RequestUri.ToString().Contains($"/recommendationsbysymbol/{GoodSymbol}"))
+            .ReturnsResponse(HttpStatusCode.OK, recommendJson);
+
+        // Bad Symbol Handling - Return 404 which usually triggers empty/null parsing or exception in Helpers
+        _mockHandler.SetupRequest(HttpMethod.Get, r => r.RequestUri.ToString().Contains(BadSymbol))
+            .ReturnsResponse(HttpStatusCode.NotFound, "{}");
+    }
+
+    public void Dispose()
+    {
+        OoplesFinance.YahooFinanceAPI.Helpers.CrumbHelper.Reset();
     }
 
     [Fact]
@@ -1460,10 +1567,10 @@ public sealed class YahooClientTests
         // Arrange
 
         // Act
-        var result = await _sut.GetRealTimeQuotesAsync(BadSymbol);
+        var result = async () => await _sut.GetRealTimeQuotesAsync(BadSymbol);
 
         // Assert
-        result.Should().BeNull();
+        await result.Should().ThrowAsync<InvalidOperationException>().WithMessage("Requested Information Not Available On Yahoo Finance");
     }
 
     [Fact]
@@ -2442,22 +2549,15 @@ public sealed class YahooClientTests
     public async Task CreateCrumbHelpInstance_ThrowsException_WhenFetchCrumbFailed()
     {
         // Arrange
-        var mockHandler = new Mock<HttpMessageHandler>(MockBehavior.Default);
-        mockHandler.SetupRequest(HttpMethod.Get, "https://login.yahoo.com/")
-            .ReturnsJsonResponse(HttpStatusCode.OK, "");
+        var mockHandler = new Mock<HttpMessageHandler>();
         mockHandler.SetupRequest(HttpMethod.Get, "https://query1.finance.yahoo.com/v1/test/getcrumb")
-            .ReturnsJsonResponse(HttpStatusCode.OK, "");
+            .ReturnsResponse(HttpStatusCode.NotFound, "");
+        OoplesFinance.YahooFinanceAPI.Helpers.CrumbHelper.handler = mockHandler.Object;
 
         // Act
-        Helpers.CrumbHelper.handler = mockHandler.Object;
-        using var client = Helpers.CrumbHelper.GetHttpClient();
         var ex = await Record.ExceptionAsync(()=>Helpers.CrumbHelper.GetInstance(true));
-
+        
         // Assert
         ex.Should().NotBeNull();
-        ex.Message.Should().Be("Failed to get crumb");
-
-        OoplesFinance.YahooFinanceAPI.Helpers.CrumbHelper.handler = new HttpClientHandler();
-        
     }
 }

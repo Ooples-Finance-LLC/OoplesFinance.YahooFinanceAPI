@@ -1,10 +1,11 @@
-﻿// CrumbHelper.cs
+// CrumbHelper.cs
 //  Andrew Baylis
 //  Created: 29/10/2024
 
 #region using
 
 using System.Runtime.CompilerServices;
+using System.Net;
 
 #endregion
 
@@ -19,13 +20,19 @@ internal sealed class CrumbHelper
     private static CrumbHelper? _instance;
 
     internal static HttpMessageHandler? handler;
-    private List<string> cookies = [];
+    private static HttpClientHandler? _clientHandler;
 
     #endregion
 
+    static CrumbHelper()
+    {
+#if NET48
+        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+#endif
+    }
+
     private CrumbHelper()
     {
-        handler = GetClientHandler();
         Crumb = string.Empty;
     }
 
@@ -50,13 +57,19 @@ internal sealed class CrumbHelper
 
     public static HttpClient GetHttpClient()
     {
-        HttpClient client = new(handler ?? GetClientHandler());
-        client.DefaultRequestHeaders.Add("Cookie", Instance.cookies);
-        client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3");
+        var h = handler ?? GetClientHandler();
+        HttpClient client = new(h, disposeHandler: false);
+
+        client.DefaultRequestHeaders.Add("User-Agent",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
+            "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
         client.DefaultRequestHeaders.Add("Cache-Control", "no-cache");
         client.DefaultRequestHeaders.Add("Connection", "keep-alive");
         client.DefaultRequestHeaders.Add("Pragma", "no-cache");
         client.DefaultRequestHeaders.Add("Upgrade-Insecure-Requests", "1");
+        client.DefaultRequestHeaders.Add("Accept",
+            "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+        client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate, br");
 
         return client;
     }
@@ -73,9 +86,26 @@ internal sealed class CrumbHelper
 
     private static HttpClientHandler GetClientHandler()
     {
-        return YahooClient.IsThrottled
-            ? new DownloadThrottleQueueHandler(40, TimeSpan.FromMinutes(1),4) //40 calls in a minute, no more than 4 simultaneously
+        if (_clientHandler != null) return _clientHandler;
+
+        var h = YahooClient.IsThrottled
+            ? new DownloadThrottleQueueHandler(40, TimeSpan.FromMinutes(1), 4) //40 calls in a minute, no more than 4 simultaneously
             : new HttpClientHandler();
+
+        if (h is HttpClientHandler httpClientHandler)
+        {
+            httpClientHandler.AllowAutoRedirect = true;
+            httpClientHandler.UseCookies = true; // Ensure cookies are used
+            // net48 doesn't support DecompressionMethods.All (introduced in .NET 7)
+#if NET48
+            httpClientHandler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+#else
+            httpClientHandler.AutomaticDecompression = DecompressionMethods.All;
+#endif
+        }
+        
+        _clientHandler = h;
+        return h;
     }
 
     #endregion
@@ -84,22 +114,13 @@ internal sealed class CrumbHelper
 
     public async Task SetCrumbAsync()
     {
-        var client = GetHttpClient();
-        var loginResponse = await client.GetAsync("https://login.yahoo.com/");
+        using var client = GetHttpClient();
 
-        if (loginResponse.IsSuccessStatusCode)
+        using var crumbResponse = await client.GetAsync("https://query1.finance.yahoo.com/v1/test/getcrumb");
+
+        if (crumbResponse.IsSuccessStatusCode)
         {
-            var login = await loginResponse.Content.ReadAsStringAsync();
-            if (loginResponse.Headers.TryGetValues("Set-Cookie", out var setCookie))
-            {
-                cookies = new List<string>(setCookie.Where(c => c.ToLower().IndexOf("domain=.yahoo.com") > 0));
-                var crumbResponse = await client.GetAsync("https://query1.finance.yahoo.com/v1/test/getcrumb");
-
-                if (crumbResponse.IsSuccessStatusCode)
-                {
-                    Crumb = await crumbResponse.Content.ReadAsStringAsync();
-                }
-            }
+            Crumb = await crumbResponse.Content.ReadAsStringAsync();
         }
 
         if (string.IsNullOrEmpty(Crumb))
@@ -112,9 +133,17 @@ internal sealed class CrumbHelper
 
     #region Internal Methods
 
-    internal void Destroy()
+    internal static void Destroy()
     {
         _instance = null;
+    }
+
+    internal static void Reset()
+    {
+        _instance = null;
+        handler = null;
+        _clientHandler?.Dispose();
+        _clientHandler = null;
     }
 
     #endregion
@@ -139,6 +168,13 @@ internal class DownloadThrottleQueueHandler : HttpClientHandler
         _throttleLoad = new SemaphoreSlim(maxParallel, maxParallel);
         _throttleRate = new SemaphoreSlim(maxPerPeriod, maxPerPeriod);
         _maxPeriod = maxPeriod;
+        AllowAutoRedirect = true;
+        // net48 doesn't support DecompressionMethods.All (introduced in .NET 7)
+#if NET48
+        AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+#else
+        AutomaticDecompression = DecompressionMethods.All;
+#endif
     }
 
     #region Override Methods

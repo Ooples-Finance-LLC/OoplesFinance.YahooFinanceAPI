@@ -12,6 +12,7 @@ try
 
     var historicalDataList = await yahooClient.GetHistoricalDataAsync(symbol, DataFrequency.Daily, startDate);
     var chartInfoList = await yahooClient.GetChartInfoAsync("GOOG", TimeRange._1Year, TimeInterval._1Day);
+    var data = await yahooClient.GetChartInfoAsync("CAPE", TimeRange._1Day, TimeInterval._1Day);
     Console.WriteLine();
     //var capitalGainList = await yahooClient.GetCapitalGainDataAsync(symbol, DataFrequency.Monthly, startDate);
     //var dividendList = await yahooClient.GetDividendDataAsync(symbol, DataFrequency.Weekly, startDate);

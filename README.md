@@ -12,9 +12,6 @@ insider transactions, fund ownership, major direct holders, top trending stock i
 Instead of listing everything, I decided it would be easier to provide examples below of every possible data type and how to use them. 
 We support getting daily, weekly, or monthly data as well as many other options.
 
-### UPDATE For EU Users
-After some research, I was able to confirm that cookies aren't working for EU users since Yahoo requires that consent is given before the proper cookie can be created. I'm looking into possible workarounds for this issue at the moment and will give updates if I find an answer.
-
 
 ### How to use this library
 

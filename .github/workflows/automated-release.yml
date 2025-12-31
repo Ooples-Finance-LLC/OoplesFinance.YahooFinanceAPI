@@ -141,85 +141,85 @@ jobs:
           echo "New version: $NEW_VERSION"
 
           echo "=== Generating Changelog ==="
-          CHANGELOG=$(printf "## Changes in v%s\n\n" "$NEW_VERSION")
+          CHANGELOG=$(printf '## Changes in v%s\n\n' "$NEW_VERSION")
 
           BREAKING=$(echo "$COMMITS" | grep -iE "BREAKING CHANGE:|BREAKING:" || true)
           if [ -n "$BREAKING" ]; then
-            CHANGELOG+=$(printf "### Breaking Changes\n")
+            CHANGELOG+=$(printf '### Breaking Changes\n')
             while IFS= read -r line; do
-              CHANGELOG+=$(printf "- %s\n" "${line#* }")
+              CHANGELOG+=$(printf '%s\n' "- ${line#* }")
             done < <(echo "$BREAKING")
-            CHANGELOG+=$(printf "\n")
+            CHANGELOG+=$(printf '\n')
           fi
 
           FEATURES=$(echo "$COMMITS" | grep -iE "^[a-f0-9]+ feat(\(.*\))?:" || true)
           if [ -n "$FEATURES" ]; then
-            CHANGELOG+=$(printf "### Features\n")
+            CHANGELOG+=$(printf '### Features\n')
             while IFS= read -r line; do
               MSG=$(echo "$line" | sed -E 's/^[a-f0-9]+ feat(\(.*\))?: //')
-              CHANGELOG+=$(printf "- %s\n" "$MSG")
+              CHANGELOG+=$(printf '%s\n' "- $MSG")
             done < <(echo "$FEATURES")
-            CHANGELOG+=$(printf "\n")
+            CHANGELOG+=$(printf '\n')
           fi
 
           FIXES=$(echo "$COMMITS" | grep -iE "^[a-f0-9]+ fix(\(.*\))?:" || true)
           if [ -n "$FIXES" ]; then
-            CHANGELOG+=$(printf "### Bug Fixes\n")
+            CHANGELOG+=$(printf '### Bug Fixes\n')
             while IFS= read -r line; do
               MSG=$(echo "$line" | sed -E 's/^[a-f0-9]+ fix(\(.*\))?: //')
-              CHANGELOG+=$(printf "- %s\n" "$MSG")
+              CHANGELOG+=$(printf '%s\n' "- $MSG")
             done < <(echo "$FIXES")
-            CHANGELOG+=$(printf "\n")
+            CHANGELOG+=$(printf '\n')
           fi
 
           PERF=$(echo "$COMMITS" | grep -iE "^[a-f0-9]+ perf(\(.*\))?:" || true)
           if [ -n "$PERF" ]; then
-            CHANGELOG+=$(printf "### Performance Improvements\n")
+            CHANGELOG+=$(printf '### Performance Improvements\n')
             while IFS= read -r line; do
               MSG=$(echo "$line" | sed -E 's/^[a-f0-9]+ perf(\(.*\))?: //')
-              CHANGELOG+=$(printf "- %s\n" "$MSG")
+              CHANGELOG+=$(printf '%s\n' "- $MSG")
             done < <(echo "$PERF")
-            CHANGELOG+=$(printf "\n")
+            CHANGELOG+=$(printf '\n')
           fi
 
           REFACTOR=$(echo "$COMMITS" | grep -iE "^[a-f0-9]+ refactor(\(.*\))?:" || true)
           if [ -n "$REFACTOR" ]; then
-            CHANGELOG+=$(printf "### Code Refactoring\n")
+            CHANGELOG+=$(printf '### Code Refactoring\n')
             while IFS= read -r line; do
               MSG=$(echo "$line" | sed -E 's/^[a-f0-9]+ refactor(\(.*\))?: //')
-              CHANGELOG+=$(printf "- %s\n" "$MSG")
+              CHANGELOG+=$(printf '%s\n' "- $MSG")
             done < <(echo "$REFACTOR")
-            CHANGELOG+=$(printf "\n")
+            CHANGELOG+=$(printf '\n')
           fi
 
           DOCS=$(echo "$COMMITS" | grep -iE "^[a-f0-9]+ docs(\(.*\))?:" || true)
           if [ -n "$DOCS" ]; then
-            CHANGELOG+=$(printf "### Documentation\n")
+            CHANGELOG+=$(printf '### Documentation\n')
             while IFS= read -r line; do
               MSG=$(echo "$line" | sed -E 's/^[a-f0-9]+ docs(\(.*\))?: //')
-              CHANGELOG+=$(printf "- %s\n" "$MSG")
+              CHANGELOG+=$(printf '%s\n' "- $MSG")
             done < <(echo "$DOCS")
-            CHANGELOG+=$(printf "\n")
+            CHANGELOG+=$(printf '\n')
           fi
 
           NEW_FEATURES=$(echo "$COMMITS" | grep -iE "^[a-f0-9]+ (add|implement|create|new) " | grep -viE "^[a-f0-9]+ (feat|fix|refactor|perf|docs)(\(.*\))?:") || true
           if [ -n "$NEW_FEATURES" ]; then
-            CHANGELOG+=$(printf "### New Features\n")
+            CHANGELOG+=$(printf '### New Features\n')
             while IFS= read -r line; do
               MSG=$(echo "$line" | sed -E 's/^[a-f0-9]+ //')
-              CHANGELOG+=$(printf "- %s\n" "$MSG")
+              CHANGELOG+=$(printf '%s\n' "- $MSG")
             done < <(echo "$NEW_FEATURES")
-            CHANGELOG+=$(printf "\n")
+            CHANGELOG+=$(printf '\n')
           fi
 
           OTHER_FIXES=$(echo "$COMMITS" | grep -iE "^[a-f0-9]+ (fix|update|improve|enhance|resolve|patch|correct|repair) " | grep -viE "^[a-f0-9]+ (feat|fix|refactor|perf|docs)(\(.*\))?:") || true
           if [ -n "$OTHER_FIXES" ]; then
-            CHANGELOG+=$(printf "### Bug Fixes & Improvements\n")
+            CHANGELOG+=$(printf '### Bug Fixes & Improvements\n')
             while IFS= read -r line; do
               MSG=$(echo "$line" | sed -E 's/^[a-f0-9]+ //')
-              CHANGELOG+=$(printf "- %s\n" "$MSG")
+              CHANGELOG+=$(printf '%s\n' "- $MSG")
             done < <(echo "$OTHER_FIXES")
-            CHANGELOG+=$(printf "\n")
+            CHANGELOG+=$(printf '\n')
           fi
 
           echo "$CHANGELOG"

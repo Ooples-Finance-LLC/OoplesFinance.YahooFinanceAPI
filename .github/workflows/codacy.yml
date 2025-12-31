@@ -1,0 +1,72 @@
+name: Codacy Security Scan
+
+on:
+  push:
+    branches: [ master, main ]
+    paths:
+      - '**.cs'
+      - '**.csproj'
+      - '.github/workflows/codacy.yml'
+  pull_request:
+    branches: [ master, main ]
+    paths:
+      - '**.cs'
+      - '**.csproj'
+      - '.github/workflows/codacy.yml'
+  schedule:
+    - cron: '24 20 * * 1'
+
+concurrency:
+  group: codacy-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  codacy-security-scan:
+    name: Codacy Security Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    if: github.event.pull_request.draft != true
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+        with:
+          fetch-depth: 1
+
+      - name: Trivy filesystem scan (SARIF)
+        uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # v0.33.1
+        with:
+          scan-type: fs
+          scan-ref: ${{ github.workspace }}/src
+          format: sarif
+          output: trivy-results.sarif
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+
+      - name: Upload Trivy SARIF to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@45c373516f557556c15d420e3f5e0aa3d64366bc # v3
+        with:
+          sarif_file: trivy-results.sarif
+          category: trivy-fs
+
+      - name: Run Codacy Analysis CLI
+        uses: codacy/codacy-analysis-cli-action@562ee3e92b8e92df8b67e0a5ff8aa8e261919c08 # v4
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          output: results.sarif
+          format: sarif
+          gh-code-scanning-compat: true
+          max-allowed-issues: 2147483647
+          skip-uncommitted-files-check: true
+          tool: issues
+          parallel: 8
+          tool-timeout: 15minutes
+          directory: ${{ github.workspace }}/src
+          run-docker-tools: false
+        continue-on-error: true

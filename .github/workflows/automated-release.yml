@@ -1,0 +1,416 @@
+name: Automated Release Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/ISSUE_TEMPLATE/**'
+      - 'LICENSE'
+      - '.gitignore'
+      - '.editorconfig'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_NOLOGO: true
+
+jobs:
+  version-and-build:
+    name: Version and Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      package_version: ${{ steps.version.outputs.version }}
+      changelog: ${{ steps.version.outputs.changelog }}
+      should_release: ${{ steps.version.outputs.should_release }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Cache NuGet packages
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
+
+      - name: Determine version from conventional commits
+        id: version
+        run: |
+          #!/bin/bash
+          set -e
+
+          echo "=== Automated Semantic Versioning from Conventional Commits ==="
+
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          echo "Latest tag: $LATEST_TAG"
+
+          CURRENT_VERSION=${LATEST_TAG#v}
+          echo "Current version: $CURRENT_VERSION"
+
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+          PATCH=${PATCH%%-*}
+
+          echo "Parsed version: $MAJOR.$MINOR.$PATCH"
+
+          if git rev-parse "$LATEST_TAG" >/dev/null 2>&1; then
+            COMMITS=$(git log "$LATEST_TAG..HEAD" --oneline --no-merges)
+          else
+            COMMITS=$(git log --oneline --no-merges)
+          fi
+
+          echo "=== Commits since last tag ==="
+          echo "$COMMITS"
+          echo "==========================="
+
+          BUMP_TYPE="none"
+
+          if echo "$COMMITS" | grep -iE "(BREAKING CHANGE:|BREAKING:|^[a-f0-9]+ [a-z]+(\(.*\))?!:)" > /dev/null; then
+            BUMP_TYPE="major"
+            echo "Found BREAKING CHANGE - will bump MAJOR version"
+          fi
+
+          if [ "$BUMP_TYPE" = "none" ] && echo "$COMMITS" | grep -iE "^[a-f0-9]+ feat(\(.*\))?:" > /dev/null; then
+            BUMP_TYPE="minor"
+            echo "Found feat: commits - will bump MINOR version"
+          fi
+
+          if [ "$BUMP_TYPE" = "none" ] && echo "$COMMITS" | grep -iE "^[a-f0-9]+ (fix|refactor|perf|docs)(\(.*\))?:" > /dev/null; then
+            BUMP_TYPE="minor"
+            echo "Found fix:/refactor:/perf:/docs: commits - will bump MINOR version"
+          fi
+
+          if [ "$BUMP_TYPE" = "none" ] && echo "$COMMITS" | grep -iE "^[a-f0-9]+ (add|implement|create|new) " > /dev/null; then
+            BUMP_TYPE="minor"
+            echo "Found Add/Implement/Create commits - will bump MINOR version"
+          fi
+
+          if [ "$BUMP_TYPE" = "none" ] && echo "$COMMITS" | grep -iE "^[a-f0-9]+ (fix|update|improve|enhance|resolve|patch|correct|repair) " > /dev/null; then
+            BUMP_TYPE="minor"
+            echo "Found Fix/Update/Improve commits - will bump MINOR version"
+          fi
+
+          case $BUMP_TYPE in
+            major)
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+              echo "Bumping MAJOR: $CURRENT_VERSION -> $MAJOR.$MINOR.$PATCH"
+              ;;
+            minor)
+              MINOR=$((MINOR + 1))
+              PATCH=0
+              echo "Bumping MINOR: $CURRENT_VERSION -> $MAJOR.$MINOR.$PATCH"
+              ;;
+            none)
+              echo "No conventional commits found, no version bump"
+              echo "should_release=false" >> $GITHUB_OUTPUT
+              echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+              echo "changelog=No release needed - no conventional commits found" >> $GITHUB_OUTPUT
+              exit 0
+              ;;
+          esac
+
+          NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+          echo "New version: $NEW_VERSION"
+
+          echo "=== Generating Changelog ==="
+          CHANGELOG="## Changes in v$NEW_VERSION"$'
+
+'
+
+          BREAKING=$(echo "$COMMITS" | grep -iE "BREAKING CHANGE:|BREAKING:" || true)
+          if [ -n "$BREAKING" ]; then
+            CHANGELOG+="### Breaking Changes"$'
+'
+            while IFS= read -r line;
+ do
+              CHANGELOG+="- ${line#* }"$'
+'
+            done < <(echo "$BREAKING")
+            CHANGELOG+=$'
+'
+          fi
+
+          FEATURES=$(echo "$COMMITS" | grep -iE "^[a-f0-9]+ feat(\(.*\))?:" || true)
+          if [ -n "$FEATURES" ]; then
+            CHANGELOG+="### Features"$'
+'
+            while IFS= read -r line;
+ do
+              MSG=$(echo "$line" | sed -E 's/^[a-f0-9]+ feat(\(.*\))?: //')
+              CHANGELOG+="- $MSG"$'
+'
+            done < <(echo "$FEATURES")
+            CHANGELOG+=$'
+'
+          fi
+
+          FIXES=$(echo "$COMMITS" | grep -iE "^[a-f0-9]+ fix(\(.*\))?:" || true)
+          if [ -n "$FIXES" ]; then
+            CHANGELOG+="### Bug Fixes"$'
+'
+            while IFS= read -r line;
+ do
+              MSG=$(echo "$line" | sed -E 's/^[a-f0-9]+ fix(\(.*\))?: //')
+              CHANGELOG+="- $MSG"$'
+'
+            done < <(echo "$FIXES")
+            CHANGELOG+=$'
+'
+          fi
+
+          PERF=$(echo "$COMMITS" | grep -iE "^[a-f0-9]+ perf(\(.*\))?:" || true)
+          if [ -n "$PERF" ]; then
+            CHANGELOG+="### Performance Improvements"$'
+'
+            while IFS= read -r line;
+ do
+              MSG=$(echo "$line" | sed -E 's/^[a-f0-9]+ perf(\(.*\))?: //')
+              CHANGELOG+="- $MSG"$'
+'
+            done < <(echo "$PERF")
+            CHANGELOG+=$'
+'
+          fi
+
+          REFACTOR=$(echo "$COMMITS" | grep -iE "^[a-f0-9]+ refactor(\(.*\))?:" || true)
+          if [ -n "$REFACTOR" ]; then
+            CHANGELOG+="### Code Refactoring"$'
+'
+            while IFS= read -r line;
+ do
+              MSG=$(echo "$line" | sed -E 's/^[a-f0-9]+ refactor(\(.*\))?: //')
+              CHANGELOG+="- $MSG"$'
+'
+            done < <(echo "$REFACTOR")
+            CHANGELOG+=$'
+'
+          fi
+
+          DOCS=$(echo "$COMMITS" | grep -iE "^[a-f0-9]+ docs(\(.*\))?:" || true)
+          if [ -n "$DOCS" ]; then
+            CHANGELOG+="### Documentation"$'
+'
+            while IFS= read -r line;
+ do
+              MSG=$(echo "$line" | sed -E 's/^[a-f0-9]+ docs(\(.*\))?: //')
+              CHANGELOG+="- $MSG"$'
+'
+            done < <(echo "$DOCS")
+            CHANGELOG+=$'
+'
+          fi
+
+          NEW_FEATURES=$(echo "$COMMITS" | grep -iE "^[a-f0-9]+ (add|implement|create|new) " | grep -viE "^[a-f0-9]+ (feat|fix|refactor|perf|docs)(\(.*\))?:") || true
+          if [ -n "$NEW_FEATURES" ]; then
+            CHANGELOG+="### New Features"$'
+'
+            while IFS= read -r line;
+ do
+              MSG=$(echo "$line" | sed -E 's/^[a-f0-9]+ //')
+              CHANGELOG+="- $MSG"$'
+'
+            done < <(echo "$NEW_FEATURES")
+            CHANGELOG+=$'
+'
+          fi
+
+          OTHER_FIXES=$(echo "$COMMITS" | grep -iE "^[a-f0-9]+ (fix|update|improve|enhance|resolve|patch|correct|repair) " | grep -viE "^[a-f0-9]+ (feat|fix|refactor|perf|docs)(\(.*\))?:") || true
+          if [ -n "$OTHER_FIXES" ]; then
+            CHANGELOG+="### Bug Fixes & Improvements"$'
+'
+            while IFS= read -r line;
+ do
+              MSG=$(echo "$line" | sed -E 's/^[a-f0-9]+ //')
+              CHANGELOG+="- $MSG"$'
+'
+            done < <(echo "$OTHER_FIXES")
+            CHANGELOG+=$'
+'
+          fi
+
+          echo "$CHANGELOG"
+
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "should_release=true" >> $GITHUB_OUTPUT
+
+          echo "$CHANGELOG" > /tmp/changelog.txt
+          {
+            echo 'changelog<<EOF'
+            cat /tmp/changelog.txt
+            echo EOF
+          } >> $GITHUB_OUTPUT
+
+      - name: Restore dependencies
+        if: steps.version.outputs.should_release == 'true'
+        run: dotnet restore
+
+      - name: Build
+        if: steps.version.outputs.should_release == 'true'
+        run: dotnet build -c Release --no-restore
+
+  pack:
+    name: Pack NuGet
+    runs-on: ubuntu-latest
+    needs: version-and-build
+    timeout-minutes: 20
+    if: needs.version-and-build.outputs.should_release == 'true'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Cache NuGet packages
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
+
+      - name: Restore and Build
+        run: |
+          dotnet restore
+          dotnet build -c Release --no-restore
+
+      - name: Pack NuGet
+        run: |
+          if [ -f "src/OoplesFinance.YahooFinanceAPI.csproj" ]; then
+            dotnet pack src/OoplesFinance.YahooFinanceAPI.csproj -c Release -o out --no-build /p:PackageVersion=${{ needs.version-and-build.outputs.package_version }}
+            echo "Package created: OoplesFinance.YahooFinanceAPI.${{ needs.version-and-build.outputs.package_version }}.nupkg"
+          else
+            echo "Error: src/OoplesFinance.YahooFinanceAPI.csproj not found"
+            exit 1
+          fi
+
+      - name: Verify TFMs in package (net48, net8.0)
+        run: |
+          set -e
+          shopt -s nullglob
+          pkgs=(out/*.nupkg)
+          if [ ${#pkgs[@]} -eq 0 ]; then
+            echo "Error: No packages found in out/"
+            exit 1
+          fi
+
+          for pkg in "${pkgs[@]}"; do
+            echo "Inspecting $pkg"
+            files=$(unzip -Z1 "$pkg")
+
+            for tfm in net48 net8.0; do
+              if ! echo "$files" | grep -qE "^lib/${tfm}/.+\.dll$"; then
+                echo "Error: Missing ${tfm} lib in package"
+                exit 1
+              else
+                echo "Found ${tfm} in package"
+              fi
+            done
+          done
+
+          echo "All required TFMs verified successfully"
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v4
+        with:
+          name: nuget-package-${{ github.sha }}
+          path: out/*.nupkg
+          if-no-files-found: error
+
+  publish-nuget:
+    name: Publish to NuGet
+    runs-on: ubuntu-latest
+    needs: [version-and-build, pack]
+    timeout-minutes: 10
+    if: needs.version-and-build.outputs.should_release == 'true'
+    steps:
+      - name: Download package
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+        with:
+          name: nuget-package-${{ github.sha }}
+          path: out/
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Push to NuGet
+        run: |
+          shopt -s nullglob
+          pkgs=(out/*.nupkg)
+
+          if [ ${#pkgs[@]} -eq 0 ]; then
+            echo "Error: No .nupkg files found in out/ directory"
+            exit 1
+          fi
+
+          for pkg in "${pkgs[@]}"; do
+            echo "Publishing $pkg to NuGet..."
+            dotnet nuget push "$pkg" \
+              --api-key ${{ secrets.NUGET_API_KEY }} \
+              --source https://api.nuget.org/v3/index.json \
+              --skip-duplicate
+
+            if [ $? -eq 0 ]; then
+              echo "Successfully published $pkg"
+            else
+              echo "Warning: Failed to publish $pkg (may already exist)"
+            fi
+          done
+
+  github-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [version-and-build, publish-nuget]
+    timeout-minutes: 10
+    if: needs.version-and-build.outputs.should_release == 'true'
+    steps:
+      - name: Download package
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+        with:
+          name: nuget-package-${{ github.sha }}
+          path: out/
+
+      - name: List artifacts
+        run: ls -lah out/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2
+        with:
+          tag_name: v${{ needs.version-and-build.outputs.package_version }}
+          name: Release v${{ needs.version-and-build.outputs.package_version }}
+          body: ${{ needs.version-and-build.outputs.changelog }}
+          files: out/*.nupkg
+          draft: false
+          prerelease: false
+          make_latest: true
+          generate_release_notes: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

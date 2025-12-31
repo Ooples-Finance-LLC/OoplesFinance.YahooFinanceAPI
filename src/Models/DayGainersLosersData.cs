@@ -13,7 +13,7 @@ public record CriteriaMeta(
 public record Criterion(
     [property: JsonProperty("field", NullValueHandling = NullValueHandling.Ignore)] string Field,
     [property: JsonProperty("operators", NullValueHandling = NullValueHandling.Ignore)] IReadOnlyList<string> Operators,
-    [property: JsonProperty("values", NullValueHandling = NullValueHandling.Ignore)] IReadOnlyList<double?> Values,
+    [property: JsonProperty("values", NullValueHandling = NullValueHandling.Ignore)] IReadOnlyList<string?> Values,
     [property: JsonProperty("labelsSelected", NullValueHandling = NullValueHandling.Ignore)] IReadOnlyList<int?> LabelsSelected,
     [property: JsonProperty("dependentValues", NullValueHandling = NullValueHandling.Ignore)] IReadOnlyList<object> DependentValues
 );

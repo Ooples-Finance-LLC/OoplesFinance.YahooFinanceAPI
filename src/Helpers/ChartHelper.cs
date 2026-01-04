@@ -22,7 +22,7 @@ internal class ChartHelper : YahooJsonBase
             LowList = new List<double>(root != null ? root.Indicators?.Quote.SelectMany(x => x.Low.Select(y => y.GetValueOrDefault())) ?? [] : [])
         };
 
-        if (result.DateList.Count == 0 || result.CloseList.Count == 0 || result.OpenList.Count == 0 || result.HighList.Count == 0 || 
+        if (result.DateList.Count == 0 || result.CloseList.Count == 0 || result.OpenList.Count == 0 || result.HighList.Count == 0 ||
             result.VolumeList.Count == 0 || result.LowList.Count == 0)
         {
             throw new InvalidOperationException("Requested Information Not Available On Yahoo Finance");

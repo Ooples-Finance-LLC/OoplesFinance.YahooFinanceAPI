@@ -11,7 +11,7 @@ public class RecommendationTrendQuoteSummary
 
 public class RecommendationTrend
 {
-    [JsonProperty("trend")] 
+    [JsonProperty("trend")]
     public List<Trend> Trend { get; set; } = [];
 
     [JsonProperty("maxAge")]

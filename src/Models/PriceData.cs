@@ -53,58 +53,58 @@ public class Price
     [JsonProperty("preMarketSource")]
     public string PreMarketSource { get; set; } = string.Empty;
 
-    [JsonProperty("postMarketChangePercent")] 
+    [JsonProperty("postMarketChangePercent")]
     public PostMarketChangePercent PostMarketChangePercent { get; set; } = new();
 
-    [JsonProperty("postMarketChange")] 
+    [JsonProperty("postMarketChange")]
     public PostMarketChange PostMarketChange { get; set; } = new();
 
     [JsonProperty("postMarketTime")]
     public int? PostMarketTime { get; set; }
 
-    [JsonProperty("postMarketPrice")] 
+    [JsonProperty("postMarketPrice")]
     public PostMarketPrice PostMarketPrice { get; set; } = new();
 
     [JsonProperty("postMarketSource")]
     public string PostMarketSource { get; set; } = string.Empty;
 
-    [JsonProperty("regularMarketChangePercent")] 
+    [JsonProperty("regularMarketChangePercent")]
     public RegularMarketChangePercent RegularMarketChangePercent { get; set; } = new();
 
-    [JsonProperty("regularMarketChange")] 
+    [JsonProperty("regularMarketChange")]
     public RegularMarketChange RegularMarketChange { get; set; } = new();
 
     [JsonProperty("regularMarketTime")]
     public int? RegularMarketTime { get; set; }
 
-    [JsonProperty("priceHint")] 
+    [JsonProperty("priceHint")]
     public PriceHint PriceHint { get; set; } = new();
 
-    [JsonProperty("regularMarketPrice")] 
+    [JsonProperty("regularMarketPrice")]
     public RegularMarketPrice RegularMarketPrice { get; set; } = new();
 
-    [JsonProperty("regularMarketDayHigh")] 
+    [JsonProperty("regularMarketDayHigh")]
     public RegularMarketDayHigh RegularMarketDayHigh { get; set; } = new();
 
-    [JsonProperty("regularMarketDayLow")] 
+    [JsonProperty("regularMarketDayLow")]
     public RegularMarketDayLow RegularMarketDayLow { get; set; } = new();
 
-    [JsonProperty("regularMarketVolume")] 
+    [JsonProperty("regularMarketVolume")]
     public RegularMarketVolume RegularMarketVolume { get; set; } = new();
 
-    [JsonProperty("averageDailyVolume10Day")] 
+    [JsonProperty("averageDailyVolume10Day")]
     public AverageDailyVolume10Day AverageDailyVolume10Day { get; set; } = new();
 
-    [JsonProperty("averageDailyVolume3Month")] 
+    [JsonProperty("averageDailyVolume3Month")]
     public AverageDailyVolume3Month AverageDailyVolume3Month { get; set; } = new();
 
-    [JsonProperty("regularMarketPreviousClose")] 
+    [JsonProperty("regularMarketPreviousClose")]
     public RegularMarketPreviousClose RegularMarketPreviousClose { get; set; } = new();
 
     [JsonProperty("regularMarketSource")]
     public string RegularMarketSource { get; set; } = string.Empty;
 
-    [JsonProperty("regularMarketOpen")] 
+    [JsonProperty("regularMarketOpen")]
     public RegularMarketOpen RegularMarketOpen { get; set; } = new();
 
     [JsonProperty("strikePrice")]
@@ -113,34 +113,34 @@ public class Price
     [JsonProperty("openInterest")]
     public OpenInterest OpenInterest { get; set; } = new();
 
-    [JsonProperty("exchange")] 
+    [JsonProperty("exchange")]
     public string Exchange { get; set; } = string.Empty;
 
-    [JsonProperty("exchangeName")] 
+    [JsonProperty("exchangeName")]
     public string ExchangeName { get; set; } = string.Empty;
 
     [JsonProperty("exchangeDataDelayedBy")]
     public int? ExchangeDataDelayedBy { get; set; }
 
-    [JsonProperty("marketState")] 
+    [JsonProperty("marketState")]
     public string MarketState { get; set; } = string.Empty;
 
-    [JsonProperty("quoteType")] 
+    [JsonProperty("quoteType")]
     public string QuoteType { get; set; } = string.Empty;
 
-    [JsonProperty("symbol")] 
+    [JsonProperty("symbol")]
     public string Symbol { get; set; } = string.Empty;
 
     [JsonProperty("underlyingSymbol")]
     public object UnderlyingSymbol { get; set; } = new();
 
-    [JsonProperty("shortName")] 
+    [JsonProperty("shortName")]
     public string ShortName { get; set; } = string.Empty;
 
-    [JsonProperty("longName")] 
+    [JsonProperty("longName")]
     public string LongName { get; set; } = string.Empty;
 
-    [JsonProperty("currency")] 
+    [JsonProperty("currency")]
     public string Currency { get; set; } = string.Empty;
 
     [JsonProperty("quoteSourceName")]
@@ -149,13 +149,13 @@ public class Price
     [JsonProperty("currencySymbol")]
     public string CurrencySymbol { get; set; } = string.Empty;
 
-    [JsonProperty("fromCurrency")] 
+    [JsonProperty("fromCurrency")]
     public object FromCurrency { get; set; } = new();
 
     [JsonProperty("lastMarket")]
     public object LastMarket { get; set; } = new();
 
-    [JsonProperty("volume24Hr")] 
+    [JsonProperty("volume24Hr")]
     public Volume24Hr Volume24Hr { get; set; } = new();
 
     [JsonProperty("volumeAllCurrencies")]

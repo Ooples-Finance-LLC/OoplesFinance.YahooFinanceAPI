@@ -26,10 +26,10 @@ public class CompanySnapshot
     [JsonProperty("sectorInfo")]
     public string SectorInfo { get; set; } = string.Empty;
 
-    [JsonProperty("company")] 
+    [JsonProperty("company")]
     public Company Company { get; set; } = new();
 
-    [JsonProperty("sector")] 
+    [JsonProperty("sector")]
     public Sector Sector { get; set; } = new();
 }
 
@@ -53,7 +53,7 @@ public class InstrumentInfo
     [JsonProperty("valuation")]
     public Valuation Valuation { get; set; } = new();
 
-    [JsonProperty("recommendation")] 
+    [JsonProperty("recommendation")]
     public Recommendation Recommendation { get; set; } = new();
 }
 
@@ -86,19 +86,19 @@ public class Recommendation
 
 public class Report
 {
-    [JsonProperty("id")] 
+    [JsonProperty("id")]
     public string Id { get; set; } = string.Empty;
 
     [JsonProperty("title")]
     public string Title { get; set; } = string.Empty;
 
-    [JsonProperty("provider")] 
+    [JsonProperty("provider")]
     public string Provider { get; set; } = string.Empty;
 
     [JsonProperty("publishedOn")]
     public DateTime? PublishedOn { get; set; } = new();
 
-    [JsonProperty("summary")] 
+    [JsonProperty("summary")]
     public string Summary { get; set; } = string.Empty;
 }
 
@@ -113,13 +113,13 @@ public class InsightsResult
     [JsonProperty("reports")]
     public List<Report> Reports { get; set; } = [];
 
-    [JsonProperty("companySnapshot")] 
+    [JsonProperty("companySnapshot")]
     public CompanySnapshot CompanySnapshot { get; set; } = new();
 }
 
 public class InsightsData
 {
-    [JsonProperty("finance")] 
+    [JsonProperty("finance")]
     public Finance Finance { get; set; } = new();
 }
 
@@ -152,10 +152,10 @@ public class TechnicalEvents
     [JsonProperty("shortTerm")]
     public string ShortTerm { get; set; } = string.Empty;
 
-    [JsonProperty("midTerm")] 
+    [JsonProperty("midTerm")]
     public string MidTerm { get; set; } = string.Empty;
 
-    [JsonProperty("longTerm")] 
+    [JsonProperty("longTerm")]
     public string LongTerm { get; set; } = string.Empty;
 }
 
@@ -164,15 +164,15 @@ public class Valuation
     [JsonProperty("color")]
     public double? Color { get; set; }
 
-    [JsonProperty("description")] 
+    [JsonProperty("description")]
     public string Description { get; set; } = string.Empty;
 
-    [JsonProperty("discount")] 
+    [JsonProperty("discount")]
     public string Discount { get; set; } = string.Empty;
 
-    [JsonProperty("relativeValue")] 
+    [JsonProperty("relativeValue")]
     public string RelativeValue { get; set; } = string.Empty;
 
-    [JsonProperty("provider")] 
+    [JsonProperty("provider")]
     public string Provider { get; set; } = string.Empty;
 }

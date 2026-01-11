@@ -216,6 +216,6 @@ public class DividendRoot
 
 public partial class DividendItem
 {
-    public long Name {get; set;}
+    public long Name { get; set; }
     public Dividends DividendDataObject { get; set; } = new();
 }

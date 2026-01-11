@@ -38,7 +38,7 @@ public class EarningsInfo
     [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -86,10 +86,10 @@ public class Quarterly
     [JsonProperty("actual")]
     public Actual Actual { get; set; } = new();
 
-    [JsonProperty("estimate")] 
+    [JsonProperty("estimate")]
     public EarningsEstimateInfo Estimate { get; set; } = new();
 
-    [JsonProperty("revenue")] 
+    [JsonProperty("revenue")]
     public Revenue Revenue { get; set; } = new();
 
     [JsonProperty("earnings")]
@@ -107,7 +107,7 @@ public class EarningsQuoteSummary
 
 public class EarningsResult
 {
-    [JsonProperty("earnings")] 
+    [JsonProperty("earnings")]
     public EarningsInfo Earnings { get; set; } = new();
 }
 

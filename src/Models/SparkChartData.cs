@@ -2,13 +2,13 @@
 
 public class SparkInfo
 {
-    [JsonProperty("timestamp")] 
+    [JsonProperty("timestamp")]
     public List<int?> Timestamp { get; set; } = [];
 
     [JsonProperty("symbol")]
     public string Symbol { get; set; } = string.Empty;
 
-    [JsonProperty("previousClose")] 
+    [JsonProperty("previousClose")]
     public object PreviousClose { get; set; } = new();
 
     [JsonProperty("chartPreviousClose")]
@@ -17,7 +17,7 @@ public class SparkInfo
     [JsonProperty("dataGranularity")]
     public int? DataGranularity { get; set; }
 
-    [JsonProperty("end")] 
+    [JsonProperty("end")]
     public object End { get; set; } = new();
 
     [JsonProperty("start")]

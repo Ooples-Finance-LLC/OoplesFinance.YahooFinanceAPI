@@ -39,7 +39,7 @@ public sealed class YahooClientTests : IDisposable
 
         // Chart / Historical (Fixed braces)
         var chartJson = @"{""chart"":{""result"":[{""timestamp"":[1600000000],""indicators"":{""quote"":[{""close"":[100.0],""open"":[100.0],""high"":[100.0],""low"":[100.0],""volume"":[1000]}],""adjclose"":[{""adjclose"":[100.0]}]},""events"":{""dividends"":{""1600000000"":{""amount"":0.5,""date"":1600000000}},""splits"":{""1600000000"":{""numerator"":2,""denominator"":1,""splitRatio"":""2:1"",""date"":1600000000}}}}]}}";
-        
+
         _mockHandler.SetupRequest(HttpMethod.Get, r => r.RequestUri.ToString().Contains($"/v8/finance/chart/{GoodSymbol}"))
             .ReturnsResponse(HttpStatusCode.OK, chartJson);
 
@@ -117,7 +117,7 @@ public sealed class YahooClientTests : IDisposable
         var insightsJson = @"{""finance"":{""result"":{""instrumentInfo"":{""technicalEvents"":{""shortTerm"":""Bearish""}},""reports"":[{""id"":""1"",""title"":""Report""}]}}}";
         _mockHandler.SetupRequest(HttpMethod.Get, r => r.RequestUri.ToString().Contains($"/insights?symbol={GoodSymbol}"))
             .ReturnsResponse(HttpStatusCode.OK, insightsJson);
-        
+
         // Recommendations
         var recommendJson = @"{""finance"":{""result"":[{""symbol"":""MSFT"",""recommendedSymbols"":[{""symbol"":""AAPL""}]}]}}";
         _mockHandler.SetupRequest(HttpMethod.Get, r => r.RequestUri.ToString().Contains($"/recommendationsbysymbol/{GoodSymbol}"))
@@ -2556,8 +2556,8 @@ public sealed class YahooClientTests : IDisposable
         OoplesFinance.YahooFinanceAPI.Helpers.CrumbHelper.handler = mockHandler.Object;
 
         // Act
-        var ex = await Record.ExceptionAsync(()=>Helpers.CrumbHelper.GetInstance(true));
-        
+        var ex = await Record.ExceptionAsync(() => Helpers.CrumbHelper.GetInstance(true));
+
         // Assert
         ex.Should().NotBeNull();
     }

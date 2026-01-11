@@ -11,28 +11,28 @@ public class QuoteTypeQuoteSummary
 
 public class QuoteType
 {
-    [JsonProperty("exchange")] 
+    [JsonProperty("exchange")]
     public string Exchange { get; set; } = string.Empty;
 
-    [JsonProperty("quoteType")] 
+    [JsonProperty("quoteType")]
     public string QuoteTypeInfo { get; set; } = string.Empty;
 
-    [JsonProperty("symbol")] 
+    [JsonProperty("symbol")]
     public string Symbol { get; set; } = string.Empty;
 
-    [JsonProperty("underlyingSymbol")] 
+    [JsonProperty("underlyingSymbol")]
     public string UnderlyingSymbol { get; set; } = string.Empty;
 
-    [JsonProperty("shortName")] 
+    [JsonProperty("shortName")]
     public string ShortName { get; set; } = string.Empty;
 
-    [JsonProperty("longName")] 
+    [JsonProperty("longName")]
     public string LongName { get; set; } = string.Empty;
 
     [JsonProperty("firstTradeDateEpochUtc")]
     public int? FirstTradeDateEpochUtc { get; set; }
 
-    [JsonProperty("timeZoneFullName")] 
+    [JsonProperty("timeZoneFullName")]
     public string TimeZoneFullName { get; set; } = string.Empty;
 
     [JsonProperty("timeZoneShortName")]

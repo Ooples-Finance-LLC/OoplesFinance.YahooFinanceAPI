@@ -41,13 +41,13 @@ public class EarningsHistoryInfo
     [JsonProperty("maxAge")]
     public int? MaxAge { get; set; }
 
-    [JsonProperty("epsActual")] 
+    [JsonProperty("epsActual")]
     public EpsActual EpsActual { get; set; } = new();
 
-    [JsonProperty("epsEstimate")] 
+    [JsonProperty("epsEstimate")]
     public EpsEstimate EpsEstimate { get; set; } = new();
 
-    [JsonProperty("epsDifference")] 
+    [JsonProperty("epsDifference")]
     public EpsDifference EpsDifference { get; set; } = new();
 
     [JsonProperty("surprisePercent")]
@@ -80,13 +80,13 @@ public class EarningsHistoryQuoteSummary
 
 public class EarningsHistoryResult
 {
-    [JsonProperty("earningsHistory")] 
+    [JsonProperty("earningsHistory")]
     public EarningsHistory EarningsHistory { get; set; } = new();
 }
 
 public class EarningsHistoryData
 {
-    [JsonProperty("quoteSummary")] 
+    [JsonProperty("quoteSummary")]
     public EarningsHistoryQuoteSummary QuoteSummary { get; set; } = new();
 }
 

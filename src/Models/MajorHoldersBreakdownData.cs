@@ -5,7 +5,7 @@ public class InsidersPercentHeld
     [JsonProperty("raw")]
     public double? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 }
 
@@ -14,7 +14,7 @@ public class InstitutionsCount
     [JsonProperty("raw")]
     public int? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
     [JsonProperty("longFmt")]
@@ -44,13 +44,13 @@ public class MajorHoldersBreakdown
     [JsonProperty("maxAge")]
     public int? MaxAge { get; set; }
 
-    [JsonProperty("insidersPercentHeld")] 
+    [JsonProperty("insidersPercentHeld")]
     public InsidersPercentHeld InsidersPercentHeld { get; set; } = new();
 
-    [JsonProperty("institutionsPercentHeld")] 
+    [JsonProperty("institutionsPercentHeld")]
     public InstitutionsPercentHeld InstitutionsPercentHeld { get; set; } = new();
 
-    [JsonProperty("institutionsFloatPercentHeld")] 
+    [JsonProperty("institutionsFloatPercentHeld")]
     public InstitutionsFloatPercentHeld InstitutionsFloatPercentHeld { get; set; } = new();
 
     [JsonProperty("institutionsCount")]
@@ -68,12 +68,12 @@ public class MajorHoldersBreakdownQuoteSummary
 
 public class MajorHoldersBreakdownResult
 {
-    [JsonProperty("majorHoldersBreakdown")] 
+    [JsonProperty("majorHoldersBreakdown")]
     public MajorHoldersBreakdown MajorHoldersBreakdown { get; set; } = new();
 }
 
 public class MajorHoldersBreakdownData
 {
-    [JsonProperty("quoteSummary")] 
+    [JsonProperty("quoteSummary")]
     public MajorHoldersBreakdownQuoteSummary QuoteSummary { get; set; } = new();
 }

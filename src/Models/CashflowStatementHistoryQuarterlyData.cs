@@ -2,7 +2,7 @@
 
 public class CashflowStatementHistoryQuarterly
 {
-    [JsonProperty("cashflowStatements")] 
+    [JsonProperty("cashflowStatements")]
     public List<CashflowStatement> CashflowStatements { get; set; } = [];
 
     [JsonProperty("maxAge")]
@@ -11,7 +11,7 @@ public class CashflowStatementHistoryQuarterly
 
 public class CashflowStatementHistoryQuarterlyQuoteSummary
 {
-    [JsonProperty("result")] 
+    [JsonProperty("result")]
     public List<CashflowStatementHistoryQuarterlyResult> Results { get; set; } = [];
 
     [JsonProperty("error")]

@@ -40,7 +40,7 @@ public class StockSplitEvents
 
 public partial class SplitItem
 {
-    public long Name {get; set;}
+    public long Name { get; set; }
     public Splits SplitDataObject { get; set; } = new();
 }
 

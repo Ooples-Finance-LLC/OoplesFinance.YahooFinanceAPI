@@ -335,7 +335,7 @@ public class SummaryDetail
     [JsonProperty("open")]
     public Open Open { get; set; } = new();
 
-    [JsonProperty("dayLow")] 
+    [JsonProperty("dayLow")]
     public DayLow DayLow { get; set; } = new();
 
     [JsonProperty("dayHigh")]

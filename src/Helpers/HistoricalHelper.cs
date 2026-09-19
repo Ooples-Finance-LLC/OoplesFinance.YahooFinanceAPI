@@ -11,7 +11,7 @@ internal class HistoricalHelper : YahooJsonBase
     /// <returns></returns>
     internal override IEnumerable<T> ParseYahooJsonData<T>(string jsonData)
     {
-        var root = (JsonConvert.DeserializeObject<HistoricalDataRoot>(jsonData)?.Chart?.Result.FirstOrDefault()) ?? 
+        var root = (JsonConvert.DeserializeObject<HistoricalDataRoot>(jsonData)?.Chart?.Result.FirstOrDefault()) ??
                 throw new InvalidOperationException("No data available from Yahoo Finance");
         var historicalChartInfoList = new List<HistoricalChartInfo>();
 

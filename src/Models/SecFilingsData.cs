@@ -2,13 +2,13 @@
 
 public class Filing
 {
-    [JsonProperty("date")] 
+    [JsonProperty("date")]
     public DateTime Date { get; set; } = new();
 
     [JsonProperty("epochDate")]
     public int? EpochDate { get; set; }
 
-    [JsonProperty("type")] 
+    [JsonProperty("type")]
     public string Type { get; set; } = string.Empty;
 
     [JsonProperty("title")]
@@ -26,7 +26,7 @@ public class Filing
 
 public class SecFilingsQuoteSummary
 {
-    [JsonProperty("result")] 
+    [JsonProperty("result")]
     public List<SecFilingsResult> Results { get; set; } = [];
 
     [JsonProperty("error")]
@@ -35,7 +35,7 @@ public class SecFilingsQuoteSummary
 
 public class SecFilingsResult
 {
-    [JsonProperty("secFilings")] 
+    [JsonProperty("secFilings")]
     public SecFilings SecFilings { get; set; } = new();
 }
 

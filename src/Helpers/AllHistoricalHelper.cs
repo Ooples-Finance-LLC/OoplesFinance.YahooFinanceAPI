@@ -13,7 +13,7 @@ internal class AllHistoricalHelper
         var root = JsonConvert.DeserializeObject<HistoricalDataRoot>(jsonData)?.Chart?.Result.FirstOrDefault() ??
                    throw new InvalidOperationException("No data available from Yahoo Finance");
 
-        var result = new HistoricalFullData {Meta = root.Meta};
+        var result = new HistoricalFullData { Meta = root.Meta };
 
         for (var i = 0; i < root.Timestamp.Count; i++)
         {

@@ -32,70 +32,70 @@ public class BalanceSheetStatement
     [JsonProperty("cash")]
     public Cash Cash { get; set; } = new();
 
-    [JsonProperty("shortTermInvestments")] 
+    [JsonProperty("shortTermInvestments")]
     public ShortTermInvestments ShortTermInvestments { get; set; } = new();
 
-    [JsonProperty("netReceivables")] 
+    [JsonProperty("netReceivables")]
     public NetReceivables NetReceivables { get; set; } = new();
 
-    [JsonProperty("inventory")] 
+    [JsonProperty("inventory")]
     public Inventory Inventory { get; set; } = new();
 
-    [JsonProperty("otherCurrentAssets")] 
+    [JsonProperty("otherCurrentAssets")]
     public OtherCurrentAssets OtherCurrentAssets { get; set; } = new();
 
-    [JsonProperty("totalCurrentAssets")] 
+    [JsonProperty("totalCurrentAssets")]
     public TotalCurrentAssets TotalCurrentAssets { get; set; } = new();
 
-    [JsonProperty("longTermInvestments")] 
+    [JsonProperty("longTermInvestments")]
     public LongTermInvestments LongTermInvestments { get; set; } = new();
 
-    [JsonProperty("propertyPlantEquipment")] 
+    [JsonProperty("propertyPlantEquipment")]
     public PropertyPlantEquipment PropertyPlantEquipment { get; set; } = new();
 
-    [JsonProperty("otherAssets")] 
+    [JsonProperty("otherAssets")]
     public OtherAssets OtherAssets { get; set; } = new();
 
-    [JsonProperty("totalAssets")] 
+    [JsonProperty("totalAssets")]
     public TotalAssets TotalAssets { get; set; } = new();
 
-    [JsonProperty("accountsPayable")] 
+    [JsonProperty("accountsPayable")]
     public AccountsPayable AccountsPayable { get; set; } = new();
 
-    [JsonProperty("shortLongTermDebt")] 
+    [JsonProperty("shortLongTermDebt")]
     public ShortLongTermDebt ShortLongTermDebt { get; set; } = new();
 
-    [JsonProperty("otherCurrentLiab")] 
+    [JsonProperty("otherCurrentLiab")]
     public OtherCurrentLiab OtherCurrentLiab { get; set; } = new();
 
-    [JsonProperty("longTermDebt")] 
+    [JsonProperty("longTermDebt")]
     public LongTermDebt LongTermDebt { get; set; } = new();
 
-    [JsonProperty("otherLiab")] 
+    [JsonProperty("otherLiab")]
     public OtherLiab OtherLiab { get; set; } = new();
 
-    [JsonProperty("totalCurrentLiabilities")] 
+    [JsonProperty("totalCurrentLiabilities")]
     public TotalCurrentLiabilities TotalCurrentLiabilities { get; set; } = new();
 
-    [JsonProperty("totalLiab")] 
+    [JsonProperty("totalLiab")]
     public TotalLiab TotalLiab { get; set; } = new();
 
-    [JsonProperty("commonStock")] 
+    [JsonProperty("commonStock")]
     public CommonStock CommonStock { get; set; } = new();
 
-    [JsonProperty("retainedEarnings")] 
+    [JsonProperty("retainedEarnings")]
     public RetainedEarnings RetainedEarnings { get; set; } = new();
 
-    [JsonProperty("treasuryStock")] 
+    [JsonProperty("treasuryStock")]
     public TreasuryStock TreasuryStock { get; set; } = new();
 
-    [JsonProperty("otherStockholderEquity")] 
+    [JsonProperty("otherStockholderEquity")]
     public OtherStockholderEquity OtherStockholderEquity { get; set; } = new();
 
-    [JsonProperty("totalStockholderEquity")] 
+    [JsonProperty("totalStockholderEquity")]
     public TotalStockholderEquity TotalStockholderEquity { get; set; } = new();
 
-    [JsonProperty("netTangibleAssets")] 
+    [JsonProperty("netTangibleAssets")]
     public NetTangibleAssets NetTangibleAssets { get; set; } = new();
 }
 
@@ -107,7 +107,7 @@ public class Cash
     [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -116,7 +116,7 @@ public class CommonStock
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
     [JsonProperty("longFmt")]
@@ -128,7 +128,7 @@ public class EndDate
     [JsonProperty("raw")]
     public int? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 }
 
@@ -137,7 +137,7 @@ public class Inventory
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
     [JsonProperty("longFmt")]
@@ -149,7 +149,7 @@ public class LongTermDebt
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
     [JsonProperty("longFmt")]
@@ -173,7 +173,7 @@ public class NetReceivables
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
     [JsonProperty("longFmt")]
@@ -185,10 +185,10 @@ public class NetTangibleAssets
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -197,10 +197,10 @@ public class OtherAssets
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -209,7 +209,7 @@ public class OtherCurrentAssets
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
     [JsonProperty("longFmt")]
@@ -221,10 +221,10 @@ public class OtherCurrentLiab
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -233,10 +233,10 @@ public class OtherLiab
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -248,7 +248,7 @@ public class OtherStockholderEquity
     [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -269,13 +269,13 @@ public class BalanceSheetHistoryQuoteSummary
     [JsonProperty("result")]
     public List<BalanceSheetHistoryResult> Results { get; set; } = [];
 
-    [JsonProperty("error")] 
+    [JsonProperty("error")]
     public object Error { get; set; } = new();
 }
 
 public class BalanceSheetHistoryResult
 {
-    [JsonProperty("balanceSheetHistory")] 
+    [JsonProperty("balanceSheetHistory")]
     public BalanceSheetHistory BalanceSheetHistory { get; set; } = new();
 }
 
@@ -284,7 +284,7 @@ public class RetainedEarnings
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
     [JsonProperty("longFmt")]
@@ -293,7 +293,7 @@ public class RetainedEarnings
 
 public class BalanceSheetHistoryData
 {
-    [JsonProperty("quoteSummary")] 
+    [JsonProperty("quoteSummary")]
     public BalanceSheetHistoryQuoteSummary QuoteSummary { get; set; } = new();
 }
 
@@ -317,7 +317,7 @@ public class ShortTermInvestments
     [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -326,10 +326,10 @@ public class TotalAssets
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -341,7 +341,7 @@ public class TotalCurrentAssets
     [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -350,10 +350,10 @@ public class TotalCurrentLiabilities
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -362,10 +362,10 @@ public class TotalLiab
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -374,7 +374,7 @@ public class TotalStockholderEquity
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
     [JsonProperty("longFmt")]
@@ -389,6 +389,6 @@ public class TreasuryStock
     [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }

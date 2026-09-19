@@ -2,7 +2,7 @@
 
 public class FundOwnership
 {
-    [JsonProperty("ownershipList")] 
+    [JsonProperty("ownershipList")]
     public List<OwnershipList> OwnershipList { get; set; } = [];
 
     [JsonProperty("maxAge")]
@@ -26,6 +26,6 @@ public class FundOwnershipResult
 
 public class FundOwnershipData
 {
-    [JsonProperty("quoteSummary")] 
+    [JsonProperty("quoteSummary")]
     public FundOwnershipQuoteSummary QuoteSummary { get; set; } = new();
 }

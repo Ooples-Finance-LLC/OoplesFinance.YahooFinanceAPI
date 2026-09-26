@@ -53,7 +53,7 @@ public class EbitdaMargins
     [JsonProperty("raw")]
     public double? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 }
 
@@ -68,82 +68,82 @@ public class FinancialData
     [JsonProperty("targetHighPrice")]
     public TargetHighPrice TargetHighPrice { get; set; } = new();
 
-    [JsonProperty("targetLowPrice")] 
+    [JsonProperty("targetLowPrice")]
     public TargetLowPrice TargetLowPrice { get; set; } = new();
 
-    [JsonProperty("targetMeanPrice")] 
+    [JsonProperty("targetMeanPrice")]
     public TargetMeanPrice TargetMeanPrice { get; set; } = new();
 
-    [JsonProperty("targetMedianPrice")] 
+    [JsonProperty("targetMedianPrice")]
     public TargetMedianPrice TargetMedianPrice { get; set; } = new();
 
-    [JsonProperty("recommendationMean")] 
+    [JsonProperty("recommendationMean")]
     public RecommendationMean RecommendationMean { get; set; } = new();
 
     [JsonProperty("recommendationKey")]
     public string RecommendationKey { get; set; } = string.Empty;
 
-    [JsonProperty("numberOfAnalystOpinions")] 
+    [JsonProperty("numberOfAnalystOpinions")]
     public NumberOfAnalystOpinions NumberOfAnalystOpinions { get; set; } = new();
 
-    [JsonProperty("totalCash")] 
+    [JsonProperty("totalCash")]
     public TotalCash TotalCash { get; set; } = new();
 
-    [JsonProperty("totalCashPerShare")] 
+    [JsonProperty("totalCashPerShare")]
     public TotalCashPerShare TotalCashPerShare { get; set; } = new();
 
-    [JsonProperty("ebitda")] 
+    [JsonProperty("ebitda")]
     public Ebitda Ebitda { get; set; } = new();
 
-    [JsonProperty("totalDebt")] 
+    [JsonProperty("totalDebt")]
     public TotalDebt TotalDebt { get; set; } = new();
 
-    [JsonProperty("quickRatio")] 
+    [JsonProperty("quickRatio")]
     public QuickRatio QuickRatio { get; set; } = new();
 
-    [JsonProperty("currentRatio")] 
+    [JsonProperty("currentRatio")]
     public CurrentRatio CurrentRatio { get; set; } = new();
 
     [JsonProperty("totalRevenue")]
     public TotalRevenue TotalRevenue { get; set; } = new();
 
-    [JsonProperty("debtToEquity")] 
+    [JsonProperty("debtToEquity")]
     public DebtToEquity DebtToEquity { get; set; } = new();
 
-    [JsonProperty("revenuePerShare")] 
+    [JsonProperty("revenuePerShare")]
     public RevenuePerShare RevenuePerShare { get; set; } = new();
 
-    [JsonProperty("returnOnAssets")] 
+    [JsonProperty("returnOnAssets")]
     public ReturnOnAssets ReturnOnAssets { get; set; } = new();
 
-    [JsonProperty("returnOnEquity")] 
+    [JsonProperty("returnOnEquity")]
     public ReturnOnEquity ReturnOnEquity { get; set; } = new();
 
-    [JsonProperty("grossProfits")] 
+    [JsonProperty("grossProfits")]
     public GrossProfits GrossProfits { get; set; } = new();
 
-    [JsonProperty("freeCashflow")] 
+    [JsonProperty("freeCashflow")]
     public FreeCashflow FreeCashflow { get; set; } = new();
 
-    [JsonProperty("operatingCashflow")] 
+    [JsonProperty("operatingCashflow")]
     public OperatingCashflow OperatingCashflow { get; set; } = new();
 
-    [JsonProperty("earningsGrowth")] 
+    [JsonProperty("earningsGrowth")]
     public EarningsGrowth EarningsGrowth { get; set; } = new();
 
-    [JsonProperty("revenueGrowth")] 
+    [JsonProperty("revenueGrowth")]
     public RevenueGrowth RevenueGrowth { get; set; } = new();
 
-    [JsonProperty("grossMargins")] 
+    [JsonProperty("grossMargins")]
     public GrossMargins GrossMargins { get; set; } = new();
 
-    [JsonProperty("ebitdaMargins")] 
+    [JsonProperty("ebitdaMargins")]
     public EbitdaMargins EbitdaMargins { get; set; } = new();
 
-    [JsonProperty("operatingMargins")] 
+    [JsonProperty("operatingMargins")]
     public OperatingMargins OperatingMargins { get; set; } = new();
 
-    [JsonProperty("profitMargins")] 
+    [JsonProperty("profitMargins")]
     public ProfitMargins ProfitMargins { get; set; } = new();
 
     [JsonProperty("financialCurrency")]
@@ -158,7 +158,7 @@ public class FreeCashflow
     [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -167,7 +167,7 @@ public class GrossMargins
     [JsonProperty("raw")]
     public double? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 }
 
@@ -188,10 +188,10 @@ public class NumberOfAnalystOpinions
     [JsonProperty("raw")]
     public int? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -200,10 +200,10 @@ public class OperatingCashflow
     [JsonProperty("raw")]
     public long? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -212,7 +212,7 @@ public class OperatingMargins
     [JsonProperty("raw")]
     public double? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 }
 
@@ -344,7 +344,7 @@ public class TotalCashPerShare
     [JsonProperty("raw")]
     public double? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 }
 
@@ -365,7 +365,7 @@ public class TotalRevenue
     [JsonProperty("raw")]
     public long? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
     [JsonProperty("longFmt")]

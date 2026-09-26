@@ -20,13 +20,13 @@ public class InsiderTransactionQuoteSummary
 
 public class InsiderTransactionResult
 {
-    [JsonProperty("insiderTransactions")] 
+    [JsonProperty("insiderTransactions")]
     public InsiderTransactions InsiderTransactions { get; set; } = new();
 }
 
 public class InsiderTransactionData
 {
-    [JsonProperty("quoteSummary")] 
+    [JsonProperty("quoteSummary")]
     public InsiderTransactionQuoteSummary QuoteSummary { get; set; } = new();
 }
 

@@ -26,7 +26,7 @@ public class IndexTrend
     [JsonProperty("symbol")]
     public string Symbol { get; set; } = string.Empty;
 
-    [JsonProperty("peRatio")] 
+    [JsonProperty("peRatio")]
     public PeRatio PeRatio { get; set; } = new();
 
     [JsonProperty("pegRatio")]
@@ -47,7 +47,7 @@ public class PeRatio
 
 public class IndexTrendQuoteSummary
 {
-    [JsonProperty("result")] 
+    [JsonProperty("result")]
     public List<IndexTrendResult> Results { get; set; } = [];
 
     [JsonProperty("error")]

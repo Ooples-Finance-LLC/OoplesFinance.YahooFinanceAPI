@@ -103,7 +103,7 @@ internal sealed class CrumbHelper
             httpClientHandler.AutomaticDecompression = DecompressionMethods.All;
 #endif
         }
-        
+
         _clientHandler = h;
         return h;
     }

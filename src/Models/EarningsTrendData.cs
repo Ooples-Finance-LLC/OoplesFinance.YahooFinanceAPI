@@ -32,7 +32,7 @@ public class _90daysAgo
     [JsonProperty("raw")]
     public double? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 }
 
@@ -41,7 +41,7 @@ public class Avg
     [JsonProperty("raw")]
     public double? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
     [JsonProperty("longFmt")]
@@ -83,22 +83,22 @@ public class DownLast90days
 
 public class EarningsEstimate
 {
-    [JsonProperty("avg")] 
+    [JsonProperty("avg")]
     public Avg Avg { get; set; } = new();
 
     [JsonProperty("low")]
     public Low Low { get; set; } = new();
 
-    [JsonProperty("high")] 
+    [JsonProperty("high")]
     public High High { get; set; } = new();
 
-    [JsonProperty("yearAgoEps")] 
+    [JsonProperty("yearAgoEps")]
     public YearAgoEps YearAgoEps { get; set; } = new();
 
-    [JsonProperty("numberOfAnalysts")] 
+    [JsonProperty("numberOfAnalysts")]
     public NumberOfAnalysts NumberOfAnalysts { get; set; } = new();
 
-    [JsonProperty("growth")] 
+    [JsonProperty("growth")]
     public Growth Growth { get; set; } = new();
 }
 
@@ -113,28 +113,28 @@ public class EarningsTrend
 
 public class EpsRevisions
 {
-    [JsonProperty("upLast7days")] 
+    [JsonProperty("upLast7days")]
     public UpLast7days UpLast7days { get; set; } = new();
 
-    [JsonProperty("upLast30days")] 
+    [JsonProperty("upLast30days")]
     public UpLast30days UpLast30days { get; set; } = new();
 
-    [JsonProperty("downLast30days")] 
+    [JsonProperty("downLast30days")]
     public DownLast30days DownLast30days { get; set; } = new();
 
-    [JsonProperty("downLast90days")] 
+    [JsonProperty("downLast90days")]
     public DownLast90days DownLast90days { get; set; } = new();
 }
 
 public class EpsTrend
 {
-    [JsonProperty("current")] 
+    [JsonProperty("current")]
     public Current Current { get; set; } = new();
 
-    [JsonProperty("7daysAgo")] 
+    [JsonProperty("7daysAgo")]
     public _7daysAgo _7daysAgo { get; set; } = new();
 
-    [JsonProperty("30daysAgo")] 
+    [JsonProperty("30daysAgo")]
     public _30daysAgo _30daysAgo { get; set; } = new();
 
     [JsonProperty("60daysAgo")]
@@ -149,7 +149,7 @@ public class High
     [JsonProperty("raw")]
     public double? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
     [JsonProperty("longFmt")]
@@ -161,7 +161,7 @@ public class Low
     [JsonProperty("raw")]
     public double? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
     [JsonProperty("longFmt")]
@@ -182,7 +182,7 @@ public class NumberOfAnalysts
 
 public class EarningsTrendQuoteSummary
 {
-    [JsonProperty("result")] 
+    [JsonProperty("result")]
     public List<EarningsTrendResult> Results { get; set; } = [];
 
     [JsonProperty("error")]
@@ -191,22 +191,22 @@ public class EarningsTrendQuoteSummary
 
 public class EarningsTrendResult
 {
-    [JsonProperty("earningsTrend")] 
+    [JsonProperty("earningsTrend")]
     public EarningsTrend EarningsTrend { get; set; } = new();
 }
 
 public class RevenueEstimate
 {
-    [JsonProperty("avg")] 
+    [JsonProperty("avg")]
     public Avg Avg { get; set; } = new();
 
-    [JsonProperty("low")] 
+    [JsonProperty("low")]
     public Low Low { get; set; } = new();
 
-    [JsonProperty("high")] 
+    [JsonProperty("high")]
     public High High { get; set; } = new();
 
-    [JsonProperty("numberOfAnalysts")] 
+    [JsonProperty("numberOfAnalysts")]
     public NumberOfAnalysts NumberOfAnalysts { get; set; } = new();
 
     [JsonProperty("yearAgoRevenue")]
@@ -233,13 +233,13 @@ public class EarningsTrendInfo
     [JsonProperty("endDate")]
     public string EndDate { get; set; } = string.Empty;
 
-    [JsonProperty("growth")] 
+    [JsonProperty("growth")]
     public Growth Growth { get; set; } = new();
 
-    [JsonProperty("earningsEstimate")] 
+    [JsonProperty("earningsEstimate")]
     public EarningsEstimate EarningsEstimate { get; set; } = new();
 
-    [JsonProperty("revenueEstimate")] 
+    [JsonProperty("revenueEstimate")]
     public RevenueEstimate RevenueEstimate { get; set; } = new();
 
     [JsonProperty("epsTrend")]
@@ -254,10 +254,10 @@ public class UpLast30days
     [JsonProperty("raw")]
     public int? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -278,7 +278,7 @@ public class YearAgoEps
     [JsonProperty("raw")]
     public double? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 }
 

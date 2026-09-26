@@ -11,13 +11,13 @@ public class SectorTrendQuoteSummary
 
 public class SectorTrendResult
 {
-    [JsonProperty("sectorTrend")] 
+    [JsonProperty("sectorTrend")]
     public SectorTrend SectorTrend { get; set; } = new();
 }
 
 public class SectorTrendData
 {
-    [JsonProperty("quoteSummary")] 
+    [JsonProperty("quoteSummary")]
     public SectorTrendQuoteSummary QuoteSummary { get; set; } = new();
 }
 
@@ -26,15 +26,15 @@ public class SectorTrend
     [JsonProperty("maxAge")]
     public int? MaxAge { get; set; }
 
-    [JsonProperty("symbol")] 
+    [JsonProperty("symbol")]
     public object Symbol { get; set; } = new();
 
-    [JsonProperty("peRatio")] 
+    [JsonProperty("peRatio")]
     public PeRatio PeRatio { get; set; } = new();
 
-    [JsonProperty("pegRatio")] 
+    [JsonProperty("pegRatio")]
     public PegRatio PegRatio { get; set; } = new();
 
-    [JsonProperty("estimates")] 
+    [JsonProperty("estimates")]
     public List<object> Estimates { get; set; } = [];
 }

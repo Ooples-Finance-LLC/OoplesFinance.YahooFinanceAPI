@@ -5,7 +5,7 @@ public class CostOfRevenue
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
     [JsonProperty("longFmt")]
@@ -41,10 +41,10 @@ public class GrossProfit
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -53,10 +53,10 @@ public class IncomeBeforeTax
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -71,70 +71,70 @@ public class IncomeStatementHistory
     [JsonProperty("endDate")]
     public EndDate EndDate { get; set; } = new();
 
-    [JsonProperty("totalRevenue")] 
+    [JsonProperty("totalRevenue")]
     public TotalRevenue TotalRevenue { get; set; } = new();
 
-    [JsonProperty("costOfRevenue")] 
+    [JsonProperty("costOfRevenue")]
     public CostOfRevenue CostOfRevenue { get; set; } = new();
 
-    [JsonProperty("grossProfit")] 
+    [JsonProperty("grossProfit")]
     public GrossProfit GrossProfit { get; set; } = new();
 
-    [JsonProperty("researchDevelopment")] 
+    [JsonProperty("researchDevelopment")]
     public ResearchDevelopment ResearchDevelopment { get; set; } = new();
 
-    [JsonProperty("sellingGeneralAdministrative")] 
+    [JsonProperty("sellingGeneralAdministrative")]
     public SellingGeneralAdministrative SellingGeneralAdministrative { get; set; } = new();
 
-    [JsonProperty("nonRecurring")] 
+    [JsonProperty("nonRecurring")]
     public NonRecurring NonRecurring { get; set; } = new();
 
-    [JsonProperty("otherOperatingExpenses")] 
+    [JsonProperty("otherOperatingExpenses")]
     public OtherOperatingExpenses OtherOperatingExpenses { get; set; } = new();
 
-    [JsonProperty("totalOperatingExpenses")] 
+    [JsonProperty("totalOperatingExpenses")]
     public TotalOperatingExpenses TotalOperatingExpenses { get; set; } = new();
 
-    [JsonProperty("operatingIncome")] 
+    [JsonProperty("operatingIncome")]
     public OperatingIncome OperatingIncome { get; set; } = new();
 
-    [JsonProperty("totalOtherIncomeExpenseNet")] 
+    [JsonProperty("totalOtherIncomeExpenseNet")]
     public TotalOtherIncomeExpenseNet TotalOtherIncomeExpenseNet { get; set; } = new();
 
-    [JsonProperty("ebit")] 
+    [JsonProperty("ebit")]
     public Ebit Ebit { get; set; } = new();
 
-    [JsonProperty("interestExpense")] 
+    [JsonProperty("interestExpense")]
     public InterestExpense InterestExpense { get; set; } = new();
 
-    [JsonProperty("incomeBeforeTax")] 
+    [JsonProperty("incomeBeforeTax")]
     public IncomeBeforeTax IncomeBeforeTax { get; set; } = new();
 
-    [JsonProperty("incomeTaxExpense")] 
+    [JsonProperty("incomeTaxExpense")]
     public IncomeTaxExpense IncomeTaxExpense { get; set; } = new();
 
-    [JsonProperty("minorityInterest")] 
+    [JsonProperty("minorityInterest")]
     public MinorityInterest MinorityInterest { get; set; } = new();
 
-    [JsonProperty("netIncomeFromContinuingOps")] 
+    [JsonProperty("netIncomeFromContinuingOps")]
     public NetIncomeFromContinuingOps NetIncomeFromContinuingOps { get; set; } = new();
 
     [JsonProperty("discontinuedOperations")]
     public DiscontinuedOperations DiscontinuedOperations { get; set; } = new();
 
-    [JsonProperty("extraordinaryItems")] 
+    [JsonProperty("extraordinaryItems")]
     public ExtraordinaryItems ExtraordinaryItems { get; set; } = new();
 
-    [JsonProperty("effectOfAccountingCharges")] 
+    [JsonProperty("effectOfAccountingCharges")]
     public EffectOfAccountingCharges EffectOfAccountingCharges { get; set; } = new();
 
     [JsonProperty("otherItems")]
     public OtherItems OtherItems { get; set; } = new();
 
-    [JsonProperty("netIncome")] 
+    [JsonProperty("netIncome")]
     public NetIncome NetIncome { get; set; } = new();
 
-    [JsonProperty("netIncomeApplicableToCommonShares")] 
+    [JsonProperty("netIncomeApplicableToCommonShares")]
     public NetIncomeApplicableToCommonShares NetIncomeApplicableToCommonShares { get; set; } = new();
 }
 
@@ -146,7 +146,7 @@ public class IncomeTaxExpense
     [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -183,7 +183,7 @@ public class NetIncomeFromContinuingOps
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
     [JsonProperty("longFmt")]
@@ -264,10 +264,10 @@ public class TotalOperatingExpenses
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -276,7 +276,7 @@ public class TotalOtherIncomeExpenseNet
     [JsonProperty("raw")]
     public int? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
     [JsonProperty("longFmt")]

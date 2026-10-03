@@ -5,7 +5,7 @@ public class YahooClient
     private readonly Country Country;
 
     private readonly Language Language;
-    
+
     public static bool IsThrottled { get; set; }
 
     public YahooClient(Country? country = null, Language? language = null)
@@ -57,7 +57,7 @@ public class YahooClient
         return new HistoricalHelper().ParseYahooJsonData<HistoricalChartInfo>(
             await DownloadRawCsvDataAsync(symbol, DataType.HistoricalPrices, dataFrequency, startDate, endDate, includeAdjustedClose));
     }
-    
+
     /// <summary>
     /// Gets a list of all Historical Data for the selected stock symbol and parameter options.
     /// </summary>
@@ -70,7 +70,7 @@ public class YahooClient
         return new AllHistoricalHelper().ParseYahooJsonData<HistoricalFullData>(
             await DownloadRawCsvDataAsync(symbol, DataType.All, dataFrequency, startDate, null, true));
     }
-    
+
     /// <summary>
     /// Gets a list of all Historical Data for the selected stock symbol and parameter options.
     /// </summary>
@@ -85,7 +85,7 @@ public class YahooClient
         return new AllHistoricalHelper().ParseYahooJsonData<HistoricalFullData>(
             await DownloadRawCsvDataAsync(symbol, DataType.All, dataFrequency, startDate, endDate, true));
     }
-    
+
     /// <summary>
     /// Gets a list of all Historical Data for the selected stock symbol and parameter options.
     /// </summary>

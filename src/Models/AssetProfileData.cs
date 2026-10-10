@@ -8,28 +8,28 @@ public class AssetProfile
     [JsonProperty("city")]
     public string City { get; set; } = string.Empty;
 
-    [JsonProperty("state")] 
+    [JsonProperty("state")]
     public string State { get; set; } = string.Empty;
 
-    [JsonProperty("zip")] 
+    [JsonProperty("zip")]
     public string Zip { get; set; } = string.Empty;
 
-    [JsonProperty("country")] 
+    [JsonProperty("country")]
     public string Country { get; set; } = string.Empty;
 
-    [JsonProperty("phone")] 
+    [JsonProperty("phone")]
     public string Phone { get; set; } = string.Empty;
 
-    [JsonProperty("website")] 
+    [JsonProperty("website")]
     public string Website { get; set; } = string.Empty;
 
-    [JsonProperty("industry")] 
+    [JsonProperty("industry")]
     public string Industry { get; set; } = string.Empty;
 
-    [JsonProperty("sector")] 
+    [JsonProperty("sector")]
     public string Sector { get; set; } = string.Empty;
 
-    [JsonProperty("longBusinessSummary")] 
+    [JsonProperty("longBusinessSummary")]
     public string LongBusinessSummary { get; set; } = string.Empty;
 
     [JsonProperty("fullTimeEmployees")]
@@ -110,19 +110,19 @@ public class AssetProfileQuoteSummary
     [JsonProperty("result")]
     public List<AssetProfileResult> Results { get; set; } = [];
 
-    [JsonProperty("error")] 
+    [JsonProperty("error")]
     public object Error { get; set; } = new();
 }
 
 public class AssetProfileResult
 {
-    [JsonProperty("assetProfile")] 
+    [JsonProperty("assetProfile")]
     public AssetProfile AssetProfile { get; set; } = new();
 }
 
 public class AssetProfileData
 {
-    [JsonProperty("quoteSummary")] 
+    [JsonProperty("quoteSummary")]
     public AssetProfileQuoteSummary QuoteSummary { get; set; } = new();
 }
 

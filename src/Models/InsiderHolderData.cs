@@ -11,10 +11,10 @@ public class InsiderHolder
     [JsonProperty("relation")]
     public string Relation { get; set; } = string.Empty;
 
-    [JsonProperty("url")] 
+    [JsonProperty("url")]
     public string Url { get; set; } = string.Empty;
 
-    [JsonProperty("transactionDescription")] 
+    [JsonProperty("transactionDescription")]
     public string TransactionDescription { get; set; } = string.Empty;
 
     [JsonProperty("latestTransDate")]
@@ -23,13 +23,13 @@ public class InsiderHolder
     [JsonProperty("positionDirect")]
     public PositionDirect PositionDirect { get; set; } = new();
 
-    [JsonProperty("positionDirectDate")] 
+    [JsonProperty("positionDirectDate")]
     public PositionDirectDate PositionDirectDate { get; set; } = new();
 
-    [JsonProperty("positionIndirect")] 
+    [JsonProperty("positionIndirect")]
     public PositionIndirect PositionIndirect { get; set; } = new();
 
-    [JsonProperty("positionIndirectDate")] 
+    [JsonProperty("positionIndirectDate")]
     public PositionIndirectDate PositionIndirectDate { get; set; } = new();
 }
 
@@ -68,7 +68,7 @@ public class PositionDirectDate
     [JsonProperty("raw")]
     public int? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 }
 
@@ -95,7 +95,7 @@ public class PositionIndirectDate
 
 public class InsiderHolderQuoteSummary
 {
-    [JsonProperty("result")] 
+    [JsonProperty("result")]
     public List<InsiderHolderResult> Results { get; set; } = [];
 
     [JsonProperty("error")]

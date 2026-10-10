@@ -17,61 +17,61 @@ public class CashflowStatement
     [JsonProperty("maxAge")]
     public int? MaxAge { get; set; }
 
-    [JsonProperty("endDate")] 
+    [JsonProperty("endDate")]
     public EndDate EndDate { get; set; } = new();
 
-    [JsonProperty("netIncome")] 
+    [JsonProperty("netIncome")]
     public NetIncome NetIncome { get; set; } = new();
 
-    [JsonProperty("depreciation")] 
+    [JsonProperty("depreciation")]
     public Depreciation Depreciation { get; set; } = new();
 
-    [JsonProperty("changeToNetincome")] 
+    [JsonProperty("changeToNetincome")]
     public ChangeToNetincome ChangeToNetincome { get; set; } = new();
 
-    [JsonProperty("changeToAccountReceivables")] 
+    [JsonProperty("changeToAccountReceivables")]
     public ChangeToAccountReceivables ChangeToAccountReceivables { get; set; } = new();
 
-    [JsonProperty("changeToLiabilities")] 
+    [JsonProperty("changeToLiabilities")]
     public ChangeToLiabilities ChangeToLiabilities { get; set; } = new();
 
-    [JsonProperty("changeToInventory")] 
+    [JsonProperty("changeToInventory")]
     public ChangeToInventory ChangeToInventory { get; set; } = new();
 
-    [JsonProperty("changeToOperatingActivities")] 
+    [JsonProperty("changeToOperatingActivities")]
     public ChangeToOperatingActivities ChangeToOperatingActivities { get; set; } = new();
 
-    [JsonProperty("totalCashFromOperatingActivities")] 
+    [JsonProperty("totalCashFromOperatingActivities")]
     public TotalCashFromOperatingActivities TotalCashFromOperatingActivities { get; set; } = new();
 
-    [JsonProperty("capitalExpenditures")] 
+    [JsonProperty("capitalExpenditures")]
     public CapitalExpenditures CapitalExpenditures { get; set; } = new();
 
-    [JsonProperty("investments")] 
+    [JsonProperty("investments")]
     public Investments Investments { get; set; } = new();
 
-    [JsonProperty("otherCashflowsFromInvestingActivities")] 
+    [JsonProperty("otherCashflowsFromInvestingActivities")]
     public OtherCashflowsFromInvestingActivities OtherCashflowsFromInvestingActivities { get; set; } = new();
 
-    [JsonProperty("totalCashflowsFromInvestingActivities")] 
+    [JsonProperty("totalCashflowsFromInvestingActivities")]
     public TotalCashflowsFromInvestingActivities TotalCashflowsFromInvestingActivities { get; set; } = new();
 
-    [JsonProperty("dividendsPaid")] 
+    [JsonProperty("dividendsPaid")]
     public DividendsPaid DividendsPaid { get; set; } = new();
 
-    [JsonProperty("netBorrowings")] 
+    [JsonProperty("netBorrowings")]
     public NetBorrowings NetBorrowings { get; set; } = new();
 
-    [JsonProperty("otherCashflowsFromFinancingActivities")] 
+    [JsonProperty("otherCashflowsFromFinancingActivities")]
     public OtherCashflowsFromFinancingActivities OtherCashflowsFromFinancingActivities { get; set; } = new();
 
-    [JsonProperty("totalCashFromFinancingActivities")] 
+    [JsonProperty("totalCashFromFinancingActivities")]
     public TotalCashFromFinancingActivities TotalCashFromFinancingActivities { get; set; } = new();
 
-    [JsonProperty("changeInCash")] 
+    [JsonProperty("changeInCash")]
     public ChangeInCash ChangeInCash { get; set; } = new();
 
-    [JsonProperty("repurchaseOfStock")] 
+    [JsonProperty("repurchaseOfStock")]
     public RepurchaseOfStock RepurchaseOfStock { get; set; } = new();
 
     [JsonProperty("issuanceOfStock")]
@@ -92,10 +92,10 @@ public class ChangeInCash
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -104,7 +104,7 @@ public class ChangeToAccountReceivables
     [JsonProperty("raw")]
     public long? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
     [JsonProperty("longFmt")]
@@ -119,7 +119,7 @@ public class ChangeToInventory
     [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -128,10 +128,10 @@ public class ChangeToLiabilities
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -152,10 +152,10 @@ public class ChangeToOperatingActivities
     [JsonProperty("raw")]
     public long? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -167,7 +167,7 @@ public class Depreciation
     [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -176,7 +176,7 @@ public class DividendsPaid
     [JsonProperty("raw")]
     public long? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
     [JsonProperty("longFmt")]
@@ -200,7 +200,7 @@ public class IssuanceOfStock
     [JsonProperty("raw")]
     public int? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
     [JsonProperty("longFmt")]
@@ -215,7 +215,7 @@ public class NetBorrowings
     [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -224,10 +224,10 @@ public class NetIncome
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -236,10 +236,10 @@ public class OtherCashflowsFromFinancingActivities
     [JsonProperty("raw")]
     public long? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -269,10 +269,10 @@ public class RepurchaseOfStock
     [JsonProperty("raw")]
     public long? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -308,7 +308,7 @@ public class TotalCashFromFinancingActivities
     [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -317,9 +317,9 @@ public class TotalCashFromOperatingActivities
     [JsonProperty("raw")]
     public object Raw { get; set; } = new();
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }

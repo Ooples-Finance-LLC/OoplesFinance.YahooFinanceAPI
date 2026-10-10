@@ -102,7 +102,7 @@ public class DividendInfo
 {
     public DividendInfo(Dividends d)
     {
-        var dt = (long) d.Date.GetValueOrDefault();
+        var dt = (long)d.Date.GetValueOrDefault();
         Date = dt.FromUnixTimeStamp();
         Amount = d.Amount;
     }

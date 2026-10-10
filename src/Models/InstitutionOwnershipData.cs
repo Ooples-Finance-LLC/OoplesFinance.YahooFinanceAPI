@@ -23,7 +23,7 @@ public class OwnershipList
     [JsonProperty("pctHeld")]
     public PctHeld PctHeld { get; set; } = new();
 
-    [JsonProperty("position")] 
+    [JsonProperty("position")]
     public Position Position { get; set; } = new();
 
     [JsonProperty("value")]

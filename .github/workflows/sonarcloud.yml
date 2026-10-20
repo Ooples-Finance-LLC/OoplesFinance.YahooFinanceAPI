@@ -210,15 +210,45 @@ jobs:
             **/*.trx
           if-no-files-found: ignore
 
+  sonar-token-check:
+    name: SonarCloud Token Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: github.event.pull_request.draft != true
+    outputs:
+      valid: ${{ steps.check.outputs.valid }}
+
+    steps:
+      # Secrets are empty for fork and Dependabot PRs, so analysis is skipped instead of failing.
+      - name: Validate SONAR_TOKEN
+        id: check
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          if [ -z "$SONAR_TOKEN" ]; then
+            echo "::warning::SONAR_TOKEN is not available; skipping SonarCloud analysis."
+            echo "valid=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          response=$(curl -sS --max-time 30 -u "$SONAR_TOKEN:" https://sonarcloud.io/api/authentication/validate || true)
+          if echo "$response" | grep -q '"valid":true'; then
+            echo "valid=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::SONAR_TOKEN is invalid or SonarCloud is unreachable; skipping SonarCloud analysis."
+            echo "valid=false" >> "$GITHUB_OUTPUT"
+          fi
+
   sonarcloud:
     name: SonarCloud Analysis
     runs-on: windows-latest
     timeout-minutes: 45
-    if: github.event.pull_request.draft != true
+    if: github.event.pull_request.draft != true && needs.sonar-token-check.outputs.valid == 'true'
     needs:
       - build-windows
       - test-net8
       - test-net48
+      - sonar-token-check
 
     steps:
       - name: Set up JDK 17

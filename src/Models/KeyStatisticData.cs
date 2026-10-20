@@ -11,6 +11,11 @@ public class _52WeekChange
 
 public class AnnualHoldingsTurnover
 {
+    [JsonProperty("raw")]
+    public double? Raw { get; set; }
+
+    [JsonProperty("fmt")]
+    public string Fmt { get; set; } = string.Empty;
 }
 
 public class Beta
@@ -24,6 +29,11 @@ public class Beta
 
 public class Beta3Year
 {
+    [JsonProperty("raw")]
+    public double? Raw { get; set; }
+
+    [JsonProperty("fmt")]
+    public string Fmt { get; set; } = string.Empty;
 }
 
 public class BookValue
@@ -247,6 +257,11 @@ public class EnterpriseValue
 
 public class FiveYearAverageReturn
 {
+    [JsonProperty("raw")]
+    public double? Raw { get; set; }
+
+    [JsonProperty("fmt")]
+    public string Fmt { get; set; } = string.Empty;
 }
 
 public class FloatShares
@@ -281,6 +296,11 @@ public class ForwardPE
 
 public class FundInceptionDate
 {
+    [JsonProperty("raw")]
+    public int? Raw { get; set; }
+
+    [JsonProperty("fmt")]
+    public string Fmt { get; set; } = string.Empty;
 }
 
 public class HeldPercentInsiders
@@ -315,6 +335,11 @@ public class ImpliedSharesOutstanding
 
 public class LastCapGain
 {
+    [JsonProperty("raw")]
+    public double? Raw { get; set; }
+
+    [JsonProperty("fmt")]
+    public string Fmt { get; set; } = string.Empty;
 }
 
 public class LastDividendDate
@@ -355,10 +380,26 @@ public class LastSplitDate
 
 public class MorningStarOverallRating
 {
+    [JsonProperty("raw")]
+    public int? Raw { get; set; }
+
+    [JsonProperty("fmt")]
+    public string Fmt { get; set; } = string.Empty;
+
+    [JsonProperty("longFmt")]
+    public string LongFmt { get; set; } = string.Empty;
 }
 
 public class MorningStarRiskRating
 {
+    [JsonProperty("raw")]
+    public int? Raw { get; set; }
+
+    [JsonProperty("fmt")]
+    public string Fmt { get; set; } = string.Empty;
+
+    [JsonProperty("longFmt")]
+    public string LongFmt { get; set; } = string.Empty;
 }
 
 public class MostRecentQuarter
@@ -447,6 +488,11 @@ public class KeyStatisticResult
 
 public class RevenueQuarterlyGrowth
 {
+    [JsonProperty("raw")]
+    public double? Raw { get; set; }
+
+    [JsonProperty("fmt")]
+    public string Fmt { get; set; } = string.Empty;
 }
 
 public class KeyStatisticData
@@ -538,10 +584,23 @@ public class ShortRatio
 
 public class ThreeYearAverageReturn
 {
+    [JsonProperty("raw")]
+    public double? Raw { get; set; }
+
+    [JsonProperty("fmt")]
+    public string Fmt { get; set; } = string.Empty;
 }
 
 public class TotalAssetsSummary
 {
+    [JsonProperty("raw")]
+    public long? Raw { get; set; }
+
+    [JsonProperty("fmt")]
+    public string Fmt { get; set; } = string.Empty;
+
+    [JsonProperty("longFmt")]
+    public string LongFmt { get; set; } = string.Empty;
 }
 
 public class TrailingEps
@@ -555,8 +614,18 @@ public class TrailingEps
 
 public class Yield
 {
+    [JsonProperty("raw")]
+    public double? Raw { get; set; }
+
+    [JsonProperty("fmt")]
+    public string Fmt { get; set; } = string.Empty;
 }
 
 public class YtdReturnSummary
 {
+    [JsonProperty("raw")]
+    public double? Raw { get; set; }
+
+    [JsonProperty("fmt")]
+    public string Fmt { get; set; } = string.Empty;
 }

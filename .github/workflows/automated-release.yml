@@ -43,10 +43,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup .NET
+      - name: Setup .NET 10.0
         uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: '10.0.x'
 
       - name: Cache NuGet packages
         uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v4
@@ -255,7 +255,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: '10.0.x'
 
       - name: Cache NuGet packages
         uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v4
@@ -273,14 +273,14 @@ jobs:
       - name: Pack NuGet
         run: |
           if [ -f "src/OoplesFinance.YahooFinanceAPI.csproj" ]; then
-            dotnet pack src/OoplesFinance.YahooFinanceAPI.csproj -c Release -o out --no-build /p:PackageVersion=${{ needs.version-and-build.outputs.package_version }}
+            dotnet pack src/OoplesFinance.YahooFinanceAPI.csproj -c Release -o out --no-build /p:PackageVersion=${{ needs.version-and-build.outputs.package_version }} /p:TargetFramework=net10.0
             echo "Package created: OoplesFinance.YahooFinanceAPI.${{ needs.version-and-build.outputs.package_version }}.nupkg"
           else
             echo "Error: src/OoplesFinance.YahooFinanceAPI.csproj not found"
             exit 1
           fi
 
-      - name: Verify TFMs in package (net48, net8.0)
+      - name: Verify TFMs in package (net48, net10.0)
         run: |
           set -e
           shopt -s nullglob
@@ -294,7 +294,7 @@ jobs:
             echo "Inspecting $pkg"
             files=$(unzip -Z1 "$pkg")
 
-            for tfm in net48 net8.0; do
+            for tfm in net48 net10.0; do
               if ! echo "$files" | grep -qE "^lib/${tfm}/.+\.dll$"; then
                 echo "Error: Missing ${tfm} lib in package"
                 exit 1
@@ -326,10 +326,10 @@ jobs:
           name: nuget-package-${{ github.sha }}
           path: out/
 
-      - name: Setup .NET
+      - name: Setup .NET 10.0
         uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: '10.0.x'
 
       - name: Push to NuGet
         run: |

@@ -48,10 +48,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup .NET 8.0
+      - name: Setup .NET 10.0
         uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Cache NuGet packages
         uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v4
@@ -71,7 +71,7 @@ jobs:
           queries: security-and-quality
 
       - name: Build for CodeQL
-        run: dotnet build src/OoplesFinance.YahooFinanceAPI.csproj -c Release --no-restore -f net8.0
+        run: dotnet build src/OoplesFinance.YahooFinanceAPI.csproj -c Release --no-restore -f net10.0
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@5d4e8d1aca955e8d8589aabd499c5cae939e33c7 # v4
@@ -91,10 +91,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup .NET 8.0
+      - name: Setup .NET 10.0
         uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Cache NuGet packages
         uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v4
@@ -119,8 +119,8 @@ jobs:
             **/obj/Release/
           retention-days: 1
 
-  test-net8:
-    name: Tests (net8.0)
+  test-net10:
+    name: Tests (net10)
     runs-on: windows-latest
     needs: build-windows
     timeout-minutes: 45
@@ -130,10 +130,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
 
-      - name: Setup .NET 8.0
+      - name: Setup .NET 10.0
         uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Cache NuGet packages
         uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v4
@@ -151,15 +151,15 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore tests/UnitTests/OoplesFinance.YahooFinanceAPI.Tests.Unit.csproj
 
-      - name: Run tests (net8.0)
+      - name: Run tests (net10.0)
         run: |
-          dotnet test tests/UnitTests/OoplesFinance.YahooFinanceAPI.Tests.Unit.csproj -c Release --framework net8.0 --no-restore --collect:"XPlat Code Coverage" --settings coverlet.runsettings --logger "trx;LogFileName=test-results-net8.trx"
+          dotnet test tests/UnitTests/OoplesFinance.YahooFinanceAPI.Tests.Unit.csproj -c Release --framework net10.0 --no-restore --collect:"XPlat Code Coverage" --settings coverlet.runsettings --logger "trx;LogFileName=test-results-net10.trx"
 
       - name: Upload coverage + test results
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v4
         if: always()
         with:
-          name: coverage-net8-${{ github.sha }}
+          name: coverage-net10-${{ github.sha }}
           path: |
             **/coverage.opencover.xml
             **/*.trx
@@ -176,10 +176,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
 
-      - name: Setup .NET 8.0
+      - name: Setup .NET 10.0
         uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Cache NuGet packages
         uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v4
@@ -217,7 +217,7 @@ jobs:
     if: github.event.pull_request.draft != true
     needs:
       - build-windows
-      - test-net8
+      - test-net10
       - test-net48
 
     steps:
@@ -232,10 +232,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup .NET 8.0
+      - name: Setup .NET 10.0
         uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Cache NuGet packages
         uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v4
@@ -261,7 +261,7 @@ jobs:
       - name: Download coverage artifacts
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
-          pattern: coverage-net8-${{ github.sha }}
+          pattern: coverage-net10-${{ github.sha }}
           path: TestResults
           merge-multiple: true
 
@@ -318,15 +318,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
 
-      - name: Setup .NET 8.0
+      - name: Setup .NET 10.0
         uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Restore and publish for size analysis
         run: |
           dotnet restore src/OoplesFinance.YahooFinanceAPI.csproj
-          dotnet publish src/OoplesFinance.YahooFinanceAPI.csproj -c Release -f net8.0 -o publish
+          dotnet publish src/OoplesFinance.YahooFinanceAPI.csproj -c Release -f net10.0 -o publish
 
       - name: Analyze artifact size
         run: |

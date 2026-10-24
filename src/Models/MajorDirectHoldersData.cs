@@ -20,12 +20,12 @@ public class MajorDirectHoldersQuoteSummary
 
 public class MajorDirectHoldersResult
 {
-    [JsonProperty("majorDirectHolders")] 
+    [JsonProperty("majorDirectHolders")]
     public MajorDirectHolders MajorDirectHolders { get; set; } = new();
 }
 
 public class MajorDirectHoldersData
 {
-    [JsonProperty("quoteSummary")] 
+    [JsonProperty("quoteSummary")]
     public MajorDirectHoldersQuoteSummary QuoteSummary { get; set; } = new();
 }

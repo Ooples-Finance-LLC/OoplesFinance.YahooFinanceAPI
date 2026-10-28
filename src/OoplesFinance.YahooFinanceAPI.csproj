@@ -8,7 +8,7 @@
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	<AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
 	<Title>Ooples Finance Yahoo Finance API</Title>
-	<Version>1.7</Version>
+	<Version>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)../version.txt').Trim())</Version>
 	<Authors>ooples</Authors>
 	<Company>Ooples Finance</Company>
 	<Copyright>Ooples Finance LLC 2022-2023</Copyright>

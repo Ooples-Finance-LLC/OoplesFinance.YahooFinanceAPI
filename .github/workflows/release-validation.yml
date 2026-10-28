@@ -1,0 +1,31 @@
+name: Release package validation
+on:
+  pull_request:
+    paths:
+      - 'version.txt'
+      - '*release-please*.json'
+      - '.github/workflows/release*.yml'
+      - '.github/scripts/*release*'
+      - 'src/OoplesFinance.YahooFinanceAPI.csproj'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
+      - uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5
+        with:
+          dotnet-version: |
+            10.0.x
+            8.0.x
+      - run: python -m unittest discover -s .github/scripts -p '*_test.py'
+      - run: dotnet pack src/OoplesFinance.YahooFinanceAPI.csproj -c Release -o out -p:GeneratePackageOnBuild=false
+      - name: Verify release metadata and package
+        shell: pwsh
+        run: |
+          $releaseVersion = (Get-Content version.txt -Raw).Trim()
+          $manifest = Get-Content .release-please-manifest.json -Raw | ConvertFrom-Json
+          if ($manifest.'.' -ne $releaseVersion) { throw 'Release manifest and version.txt disagree' }
+          python .github/scripts/verify-release-package.py out $releaseVersion

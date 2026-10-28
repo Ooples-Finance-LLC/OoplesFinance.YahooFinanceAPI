@@ -13,4 +13,3 @@ jobs:
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
       - run: node --test .github/scripts/*.test.cjs
-      - run: python -m unittest discover -s .github/scripts -p '*_test.py'

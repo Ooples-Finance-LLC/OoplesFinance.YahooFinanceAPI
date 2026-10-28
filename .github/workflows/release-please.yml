@@ -10,6 +10,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   release-please:
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     permissions:
       contents: write

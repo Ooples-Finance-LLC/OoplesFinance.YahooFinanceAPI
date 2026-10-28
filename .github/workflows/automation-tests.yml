@@ -1,0 +1,15 @@
+name: Automation tests
+on:
+  pull_request:
+    paths: ['.github/scripts/**', '.github/workflows/**', '.github/dependabot.yml', '*release-please*.json', 'version.txt']
+  push:
+    branches: [master]
+    paths: ['.github/scripts/**', '.github/workflows/**', '.github/dependabot.yml', '*release-please*.json', 'version.txt']
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
+      - run: node --test .github/scripts/*.test.cjs

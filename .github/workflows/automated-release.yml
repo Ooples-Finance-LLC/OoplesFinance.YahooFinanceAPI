@@ -273,14 +273,14 @@ jobs:
       - name: Pack NuGet
         run: |
           if [ -f "src/OoplesFinance.YahooFinanceAPI.csproj" ]; then
-            dotnet pack src/OoplesFinance.YahooFinanceAPI.csproj -c Release -o out --no-build /p:PackageVersion=${{ needs.version-and-build.outputs.package_version }} /p:TargetFramework=net10.0
+            dotnet pack src/OoplesFinance.YahooFinanceAPI.csproj -c Release -o out --no-build /p:PackageVersion=${{ needs.version-and-build.outputs.package_version }}
             echo "Package created: OoplesFinance.YahooFinanceAPI.${{ needs.version-and-build.outputs.package_version }}.nupkg"
           else
             echo "Error: src/OoplesFinance.YahooFinanceAPI.csproj not found"
             exit 1
           fi
 
-      - name: Verify TFMs in package (net48, net10.0)
+      - name: Verify TFMs in package (net48, net8.0, net10.0)
         run: |
           set -e
           shopt -s nullglob
@@ -294,7 +294,7 @@ jobs:
             echo "Inspecting $pkg"
             files=$(unzip -Z1 "$pkg")
 
-            for tfm in net48 net10.0; do
+            for tfm in net48 net8.0 net10.0; do
               if ! echo "$files" | grep -qE "^lib/${tfm}/.+\.dll$"; then
                 echo "Error: Missing ${tfm} lib in package"
                 exit 1

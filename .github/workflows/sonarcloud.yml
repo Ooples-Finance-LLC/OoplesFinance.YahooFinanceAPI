@@ -165,6 +165,54 @@ jobs:
             **/*.trx
           if-no-files-found: ignore
 
+  test-net8:
+    name: Tests (net8)
+    runs-on: windows-latest
+    needs: build-windows
+    timeout-minutes: 45
+    if: github.event.pull_request.draft != true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
+
+      - name: Setup .NET 10.0
+        uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5
+        with:
+          dotnet-version: |
+            10.0.x
+            8.0.x
+
+      - name: Cache NuGet packages
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: build-output-${{ github.sha }}
+
+      - name: Restore dependencies
+        run: dotnet restore tests/UnitTests/OoplesFinance.YahooFinanceAPI.Tests.Unit.csproj
+
+      - name: Run tests (net8.0)
+        run: |
+          dotnet test tests/UnitTests/OoplesFinance.YahooFinanceAPI.Tests.Unit.csproj -c Release --framework net8.0 --no-restore --collect:"XPlat Code Coverage" --settings coverlet.runsettings --logger "trx;LogFileName=test-results-net8.trx"
+
+      - name: Upload coverage + test results
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v4
+        if: always()
+        with:
+          name: coverage-net8-${{ github.sha }}
+          path: |
+            **/coverage.opencover.xml
+            **/*.trx
+          if-no-files-found: ignore
+
   test-net48:
     name: Tests (net48)
     runs-on: windows-latest
@@ -218,6 +266,7 @@ jobs:
     needs:
       - build-windows
       - test-net10
+      - test-net8
       - test-net48
 
     steps:

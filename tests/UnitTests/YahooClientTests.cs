@@ -361,6 +361,40 @@ public sealed class YahooClientTests : IDisposable
         await result.Should().ThrowAsync<ArgumentException>().WithMessage("Symbol Parameter Can't Be Empty Or Null");
     }
 
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task FundTotalAssets_PreservesLargeValuesAndFormatting(bool keyStatistics)
+    {
+        var module = keyStatistics ? "defaultKeyStatistics" : "summaryDetail";
+        var json = "{\"quoteSummary\":{\"result\":[{\"" + module +
+            "\":{\"totalAssets\":{\"raw\":654321098765,\"fmt\":\"654.32B\",\"longFmt\":\"654,321,098,765\"}}}]}}";
+        _mockHandler.SetupRequest(HttpMethod.Get, r => r.RequestUri.ToString().Contains($"/quoteSummary/{GoodFundSymbol}"))
+            .ReturnsResponse(HttpStatusCode.OK, json);
+
+        var assets = keyStatistics
+            ? (await _sut.GetKeyStatisticsAsync(GoodFundSymbol)).TotalAssets
+            : (await _sut.GetSummaryDetailsAsync(GoodFundSymbol)).TotalAssets;
+
+        assets.Raw.Should().Be(654321098765L);
+        assets.Fmt.Should().Be("654.32B");
+        assets.LongFmt.Should().Be("654,321,098,765");
+    }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task FundTotalAssets_MissingValueRemainsUnknown(bool keyStatistics)
+    {
+        // Yahoo commonly omits fund-only fields for equities. Missing must not become zero.
+        var assets = keyStatistics
+            ? (await _sut.GetKeyStatisticsAsync(GoodSymbol)).TotalAssets
+            : (await _sut.GetSummaryDetailsAsync(GoodSymbol)).TotalAssets;
+        assets.Raw.Should().BeNull();
+        assets.Fmt.Should().BeEmpty();
+        assets.LongFmt.Should().BeEmpty();
+    }
+
     [Fact]
     public async Task GetKeyStatistics_ReturnsData_WhenValidSymbolIsUsed()
     {

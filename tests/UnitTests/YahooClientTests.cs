@@ -396,6 +396,47 @@ public sealed class YahooClientTests : IDisposable
     }
 
     [Fact]
+    public async Task FundStatistics_PreservesReturnsRatingsAndPreEpochInception()
+    {
+        var json = """
+            {"quoteSummary":{"result":[{"defaultKeyStatistics":{
+              "annualHoldingsTurnover":{"raw":0.03,"fmt":"3%"},
+              "beta3Year":{"raw":0.95,"fmt":"0.95"},
+              "fiveYearAverageReturn":{"raw":0.125,"fmt":"12.5%"},
+              "fundInceptionDate":{"raw":-1447190400,"fmt":"1924-02-21"},
+              "lastCapGain":{"raw":0,"fmt":"0.00"},
+              "morningStarOverallRating":{"raw":4,"fmt":"4","longFmt":"4"},
+              "morningStarRiskRating":{"raw":3,"fmt":"3","longFmt":"3"},
+              "revenueQuarterlyGrowth":{"raw":null},
+              "threeYearAverageReturn":{"raw":-0.025,"fmt":"-2.5%"},
+              "yield":{"raw":0.02,"fmt":"2%"},
+              "ytdReturn":{"raw":-0.15,"fmt":"-15%"}
+            }}]}}
+            """;
+        _mockHandler.SetupRequest(HttpMethod.Get, r => r.RequestUri.ToString().Contains($"/quoteSummary/{GoodFundSymbol}"))
+            .ReturnsResponse(HttpStatusCode.OK, json);
+
+        var result = await _sut.GetKeyStatisticsAsync(GoodFundSymbol);
+
+        result.AnnualHoldingsTurnover.Raw.Should().Be(0.03);
+        result.AnnualHoldingsTurnover.Fmt.Should().Be("3%");
+        result.Beta3Year.Raw.Should().Be(0.95);
+        result.FiveYearAverageReturn.Raw.Should().Be(0.125);
+        result.FundInceptionDate.Raw.Should().Be(-1447190400);
+        result.FundInceptionDate.Fmt.Should().Be("1924-02-21");
+        result.LastCapGain.Raw.Should().Be(0);
+        result.MorningStarOverallRating.Raw.Should().Be(4);
+        result.MorningStarOverallRating.LongFmt.Should().Be("4");
+        result.MorningStarRiskRating.Raw.Should().Be(3);
+        result.MorningStarRiskRating.LongFmt.Should().Be("3");
+        result.RevenueQuarterlyGrowth.Raw.Should().BeNull();
+        result.ThreeYearAverageReturn.Raw.Should().Be(-0.025);
+        result.ThreeYearAverageReturn.Fmt.Should().Be("-2.5%");
+        result.Yield.Raw.Should().Be(0.02);
+        result.YtdReturn.Raw.Should().Be(-0.15);
+    }
+
+    [Fact]
     public async Task GetKeyStatistics_ReturnsData_WhenValidSymbolIsUsed()
     {
         // Arrange

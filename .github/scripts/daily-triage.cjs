@@ -19,7 +19,7 @@ function selectAlerts({ issues, pulls, runs, now = Date.now() }) {
     if (pr.draft || pr.state !== 'open') continue;
     const review = (pr.reviewsData || []).filter(r => isMaintainer(r) && ['APPROVED', 'CHANGES_REQUESTED'].includes(r.state))
       .sort((a, b) => time(b.submitted_at) - time(a.submitted_at))[0];
-    if (review && time(review.submitted_at) >= time(pr.lastCommitAt || pr.created_at)) continue;
+    if (review?.commit_id && review.commit_id === pr.head?.sha) continue;
     const waitingSince = review ? pr.lastCommitAt : pr.created_at;
     if (now - time(waitingSince) >= 7 * DAY)
       alerts.push({ key: `pr:${pr.number}`, text: `PR #${pr.number}: ${safe(pr.title)} — awaiting review for at least 7 days`, url: pr.html_url });

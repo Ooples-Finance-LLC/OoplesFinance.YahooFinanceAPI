@@ -5,7 +5,7 @@ const now = Date.parse('2026-10-28T13:30:00Z');
 const old = '2026-10-01T00:00:00Z';
 const recent = '2026-10-27T00:00:00Z';
 const issue = { number: 157, title: 'ETF data', state: 'open', created_at: old, author_association: 'NONE', html_url: 'https://example.test/157' };
-const pr = { number: 167, title: 'Fix data', state: 'open', created_at: old, lastCommitAt: old, html_url: 'https://example.test/167' };
+const pr = { number: 167, head: { sha: 'reviewed-head' }, title: 'Fix data', state: 'open', created_at: old, lastCommitAt: old, html_url: 'https://example.test/167' };
 const ci = { workflow_id: 10, name: 'CI', status: 'completed', conclusion: 'failure', created_at: old, html_url: 'https://example.test/run' };
 const select = overrides => selectAlerts({ issues: [], pulls: [], runs: [], now, ...overrides }).map(a => a.key);
 test('thresholds and maintainer responses distinguish actionable issues', () => {
@@ -16,9 +16,11 @@ test('thresholds and maintainer responses distinguish actionable issues', () => 
 test('PR reviews cover only the reviewed commits and drafts are excluded', () => {
   assert.deepEqual(select({ pulls: [pr] }), ['pr:167']);
   assert.deepEqual(select({ pulls: [{ ...pr, draft: true }] }), []);
-  const review = { author_association: 'MEMBER', state: 'APPROVED', submitted_at: '2026-10-02T00:00:00Z' };
+  const review = { commit_id: 'reviewed-head', author_association: 'MEMBER', state: 'APPROVED', submitted_at: '2026-10-02T00:00:00Z' };
   assert.deepEqual(select({ pulls: [{ ...pr, reviewsData: [review] }] }), []);
-  assert.deepEqual(select({ pulls: [{ ...pr, lastCommitAt: '2026-10-03T00:00:00Z', reviewsData: [review] }] }), ['pr:167']);
+  assert.deepEqual(select({ pulls: [{ ...pr, head: { sha: 'new-head' }, lastCommitAt: '2026-10-03T00:00:00Z', reviewsData: [review] }] }), ['pr:167']);
+  // A backdated commit must not make an old approval cover a different head.
+  assert.deepEqual(select({ pulls: [{ ...pr, head: { sha: 'backdated-head' }, reviewsData: [review] }] }), ['pr:167']);
 });
 test('CI recovery clears an alert; an in-progress rerun does not hide the failed completed run', () => {
   assert.deepEqual(select({ runs: [ci, { ...ci, created_at: recent, status: 'in_progress', conclusion: null }] }), ['ci:10']);

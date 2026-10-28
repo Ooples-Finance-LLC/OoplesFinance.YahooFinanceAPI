@@ -258,16 +258,33 @@ jobs:
             **/*.trx
           if-no-files-found: ignore
 
+  sonar-token-check:
+    name: SonarCloud Token Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: github.event.pull_request.draft != true
+    outputs:
+      valid: ${{ steps.check.outputs.valid }}
+
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
+      - name: Validate SONAR_TOKEN
+        id: check
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: node .github/scripts/check-sonar-token.cjs
+
   sonarcloud:
     name: SonarCloud Analysis
     runs-on: windows-latest
     timeout-minutes: 45
-    if: github.event.pull_request.draft != true
+    if: github.event.pull_request.draft != true && needs.sonar-token-check.outputs.valid == 'true'
     needs:
       - build-windows
       - test-net10
       - test-net8
       - test-net48
+      - sonar-token-check
 
     steps:
       - name: Set up JDK 17

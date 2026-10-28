@@ -5,7 +5,7 @@ public class History
     [JsonProperty("epochGradeDate")]
     public int? EpochGradeDate { get; set; }
 
-    [JsonProperty("firm")] 
+    [JsonProperty("firm")]
     public string Firm { get; set; } = string.Empty;
 
     [JsonProperty("toGrade")]
@@ -20,7 +20,7 @@ public class History
 
 public class UpgradeDowngradeHistoryQuoteSummary
 {
-    [JsonProperty("result")] 
+    [JsonProperty("result")]
     public List<UpgradeDowngradeHistoryResult> Results { get; set; } = [];
 
     [JsonProperty("error")]
@@ -29,7 +29,7 @@ public class UpgradeDowngradeHistoryQuoteSummary
 
 public class UpgradeDowngradeHistoryResult
 {
-    [JsonProperty("upgradeDowngradeHistory")] 
+    [JsonProperty("upgradeDowngradeHistory")]
     public UpgradeDowngradeHistory UpgradeDowngradeHistory { get; set; } = new();
 }
 

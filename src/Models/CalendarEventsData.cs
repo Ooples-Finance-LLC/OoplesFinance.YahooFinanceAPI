@@ -11,7 +11,7 @@ public class CalendarEvents
     [JsonProperty("exDividendDate")]
     public ExDividendDate ExDividendDate { get; set; } = new();
 
-    [JsonProperty("dividendDate")] 
+    [JsonProperty("dividendDate")]
     public DividendDate DividendDate { get; set; } = new();
 }
 
@@ -29,13 +29,13 @@ public class Earnings
     [JsonProperty("earningsDate")]
     public List<EarningsDate> EarningsDate { get; set; } = [];
 
-    [JsonProperty("earningsAverage")] 
+    [JsonProperty("earningsAverage")]
     public EarningsAverage EarningsAverage { get; set; } = new();
 
-    [JsonProperty("earningsLow")] 
+    [JsonProperty("earningsLow")]
     public EarningsLow EarningsLow { get; set; } = new();
 
-    [JsonProperty("earningsHigh")] 
+    [JsonProperty("earningsHigh")]
     public EarningsHigh EarningsHigh { get; set; } = new();
 
     [JsonProperty("revenueAverage")]
@@ -86,7 +86,7 @@ public class EarningsLow
 
 public class CalendarEventsQuoteSummary
 {
-    [JsonProperty("result")] 
+    [JsonProperty("result")]
     public List<CalendarEventsResult> Results { get; set; } = [];
 
     [JsonProperty("error")]
@@ -104,10 +104,10 @@ public class RevenueAverage
     [JsonProperty("raw")]
     public long? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
-    [JsonProperty("longFmt")] 
+    [JsonProperty("longFmt")]
     public string LongFmt { get; set; } = string.Empty;
 }
 
@@ -116,7 +116,7 @@ public class RevenueHigh
     [JsonProperty("raw")]
     public long? Raw { get; set; }
 
-    [JsonProperty("fmt")] 
+    [JsonProperty("fmt")]
     public string Fmt { get; set; } = string.Empty;
 
     [JsonProperty("longFmt")]

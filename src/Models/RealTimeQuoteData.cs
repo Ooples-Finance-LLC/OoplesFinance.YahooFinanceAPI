@@ -2,7 +2,7 @@
 
 public class QuoteResponse
 {
-    [JsonProperty("result")] 
+    [JsonProperty("result")]
     public List<RealTimeQuoteResult> Results { get; set; } = [];
 
     [JsonProperty("error")]
@@ -11,28 +11,28 @@ public class QuoteResponse
 
 public class RealTimeQuoteResult
 {
-    [JsonProperty("language")] 
+    [JsonProperty("language")]
     public string Language { get; set; } = string.Empty;
 
-    [JsonProperty("region")] 
+    [JsonProperty("region")]
     public string Region { get; set; } = string.Empty;
 
-    [JsonProperty("quoteType")] 
+    [JsonProperty("quoteType")]
     public string QuoteType { get; set; } = string.Empty;
 
-    [JsonProperty("typeDisp")] 
+    [JsonProperty("typeDisp")]
     public string TypeDisp { get; set; } = string.Empty;
 
-    [JsonProperty("quoteSourceName")] 
+    [JsonProperty("quoteSourceName")]
     public string QuoteSourceName { get; set; } = string.Empty;
 
     [JsonProperty("triggerable")]
     public bool? Triggerable { get; set; }
 
-    [JsonProperty("customPriceAlertConfidence")] 
+    [JsonProperty("customPriceAlertConfidence")]
     public string CustomPriceAlertConfidence { get; set; } = string.Empty;
 
-    [JsonProperty("currency")] 
+    [JsonProperty("currency")]
     public string Currency { get; set; } = string.Empty;
 
     [JsonProperty("fiftyTwoWeekHighChange")]
@@ -133,31 +133,31 @@ public class RealTimeQuoteResult
     [JsonProperty("regularMarketPrice")]
     public double? RegularMarketPrice { get; set; }
 
-    [JsonProperty("marketState")] 
+    [JsonProperty("marketState")]
     public string MarketState { get; set; } = string.Empty;
 
-    [JsonProperty("exchange")] 
+    [JsonProperty("exchange")]
     public string Exchange { get; set; } = string.Empty;
 
-    [JsonProperty("shortName")] 
+    [JsonProperty("shortName")]
     public string ShortName { get; set; } = string.Empty;
 
-    [JsonProperty("longName")] 
+    [JsonProperty("longName")]
     public string LongName { get; set; } = string.Empty;
 
-    [JsonProperty("messageBoardId")] 
+    [JsonProperty("messageBoardId")]
     public string MessageBoardId { get; set; } = string.Empty;
 
-    [JsonProperty("exchangeTimezoneName")] 
+    [JsonProperty("exchangeTimezoneName")]
     public string ExchangeTimezoneName { get; set; } = string.Empty;
 
-    [JsonProperty("exchangeTimezoneShortName")] 
+    [JsonProperty("exchangeTimezoneShortName")]
     public string ExchangeTimezoneShortName { get; set; } = string.Empty;
 
     [JsonProperty("gmtOffSetMilliseconds")]
     public int? GmtOffSetMilliseconds { get; set; }
 
-    [JsonProperty("market")] 
+    [JsonProperty("market")]
     public string Market { get; set; } = string.Empty;
 
     [JsonProperty("esgPopulated")]
@@ -190,7 +190,7 @@ public class RealTimeQuoteResult
     [JsonProperty("regularMarketDayHigh")]
     public double? RegularMarketDayHigh { get; set; }
 
-    [JsonProperty("regularMarketDayRange")] 
+    [JsonProperty("regularMarketDayRange")]
     public string RegularMarketDayRange { get; set; } = string.Empty;
 
     [JsonProperty("regularMarketDayLow")]
@@ -214,10 +214,10 @@ public class RealTimeQuoteResult
     [JsonProperty("askSize")]
     public int? AskSize { get; set; }
 
-    [JsonProperty("fullExchangeName")] 
+    [JsonProperty("fullExchangeName")]
     public string FullExchangeName { get; set; } = string.Empty;
 
-    [JsonProperty("financialCurrency")] 
+    [JsonProperty("financialCurrency")]
     public string FinancialCurrency { get; set; } = string.Empty;
 
     [JsonProperty("regularMarketOpen")]
@@ -235,7 +235,7 @@ public class RealTimeQuoteResult
     [JsonProperty("fiftyTwoWeekLowChangePercent")]
     public double? FiftyTwoWeekLowChangePercent { get; set; }
 
-    [JsonProperty("fiftyTwoWeekRange")] 
+    [JsonProperty("fiftyTwoWeekRange")]
     public string FiftyTwoWeekRange { get; set; } = string.Empty;
 
     [JsonProperty("displayName")]

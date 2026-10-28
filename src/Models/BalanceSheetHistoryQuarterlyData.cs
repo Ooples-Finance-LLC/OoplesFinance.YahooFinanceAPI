@@ -20,12 +20,12 @@ public class BalanceSheetHistoryQuarterlyQuoteSummary
 
 public class BalanceSheetHistoryQuarterlyResult
 {
-    [JsonProperty("balanceSheetHistoryQuarterly")] 
+    [JsonProperty("balanceSheetHistoryQuarterly")]
     public BalanceSheetHistoryQuarterly BalanceSheetHistoryQuarterly { get; set; } = new();
 }
 
 public class BalanceSheetHistoryQuarterlyData
 {
-    [JsonProperty("quoteSummary")] 
+    [JsonProperty("quoteSummary")]
     public BalanceSheetHistoryQuarterlyQuoteSummary QuoteSummary { get; set; } = new();
 }

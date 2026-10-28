@@ -23,10 +23,10 @@ public class EsgScores
     [JsonProperty("maxAge")]
     public int? MaxAge { get; set; }
 
-    [JsonProperty("totalEsg")] 
+    [JsonProperty("totalEsg")]
     public TotalEsg TotalEsg { get; set; } = new();
 
-    [JsonProperty("environmentScore")] 
+    [JsonProperty("environmentScore")]
     public EnvironmentScore EnvironmentScore { get; set; } = new();
 
     [JsonProperty("socialScore")]
@@ -56,25 +56,25 @@ public class EsgScores
     [JsonProperty("relatedControversy")]
     public List<string> RelatedControversy { get; set; } = [];
 
-    [JsonProperty("peerEsgScorePerformance")] 
+    [JsonProperty("peerEsgScorePerformance")]
     public PeerEsgScorePerformance PeerEsgScorePerformance { get; set; } = new();
 
-    [JsonProperty("peerGovernancePerformance")] 
+    [JsonProperty("peerGovernancePerformance")]
     public PeerGovernancePerformance PeerGovernancePerformance { get; set; } = new();
 
-    [JsonProperty("peerSocialPerformance")] 
+    [JsonProperty("peerSocialPerformance")]
     public PeerSocialPerformance PeerSocialPerformance { get; set; } = new();
 
-    [JsonProperty("peerEnvironmentPerformance")] 
+    [JsonProperty("peerEnvironmentPerformance")]
     public PeerEnvironmentPerformance PeerEnvironmentPerformance { get; set; } = new();
 
-    [JsonProperty("peerHighestControversyPerformance")] 
+    [JsonProperty("peerHighestControversyPerformance")]
     public PeerHighestControversyPerformance PeerHighestControversyPerformance { get; set; } = new();
 
-    [JsonProperty("percentile")] 
+    [JsonProperty("percentile")]
     public Percentile Percentile { get; set; } = new();
 
-    [JsonProperty("environmentPercentile")] 
+    [JsonProperty("environmentPercentile")]
     public EnvironmentPercentile EnvironmentPercentile { get; set; } = new();
 
     [JsonProperty("socialPercentile")]

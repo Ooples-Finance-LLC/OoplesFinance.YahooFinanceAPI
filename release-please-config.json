@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "release-type": "simple",
   "include-component-in-tag": false,
-  "bootstrap-sha": "4a59f93a95f1cc24cc1c5ed8f85708425d06d9ff",
+  "bootstrap-sha": "5644968922c7edcc1ca87e0790a1ad21aeef81a1",
   "packages": {
     ".": {
       "package-name": "OoplesFinance.YahooFinanceAPI",

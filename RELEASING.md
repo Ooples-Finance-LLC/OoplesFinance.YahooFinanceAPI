@@ -2,7 +2,7 @@
 
 Release Please maintains one rolling release PR on `master`. Use conventional PR titles (`fix:`, `feat:`, `build(deps):`) so squash merges appear in the changelog. Merging ordinary changes does not publish a package. Review and merge the release PR to create its version tag and GitHub release; only then are all declared frameworks tested, packed, verified, and published to NuGet.
 
-`version.txt` and `.release-please-manifest.json` start at the last published release, 1.7.1. The project reads `version.txt`; Release Please updates it and the changelog. The old per-push release workflow is removed so two publishers cannot race.
+`version.txt` and `.release-please-manifest.json` start at the last published release, 1.7.2. The project reads `version.txt`; Release Please updates it and the changelog. The old per-push release workflow is removed so two publishers cannot race.
 
 ## Repository setup
 

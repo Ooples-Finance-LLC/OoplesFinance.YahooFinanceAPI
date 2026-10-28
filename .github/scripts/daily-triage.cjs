@@ -9,7 +9,7 @@ const safe = x => String(x).replace(/@/g, '@\u200b').replace(/[\r\n]/g, ' ').rep
 function selectAlerts({ issues, pulls, runs, now = Date.now() }) {
   const alerts = [];
   for (const issue of issues) {
-    if (issue.pull_request || issue.state !== 'open' || issue.body?.includes(MARKER) || isMaintainer(issue)) continue;
+    if (issue.pull_request || issue.state !== 'open' || isMaintainer(issue)) continue;
     const comments = issue.commentsData || [];
     const acknowledged = comments.some(isMaintainer);
     if (!acknowledged && now - time(issue.created_at) >= 3 * DAY)
@@ -40,7 +40,7 @@ async function run({ github, context, core, now = Date.now() }) {
   const repo = context.repo;
   const { data: metadata } = await github.rest.repos.get(repo);
   const allIssues = await github.paginate(github.rest.issues.listForRepo, { ...repo, state: 'all', per_page: 100 });
-  const dashboard = allIssues.find(i => i.user?.login === 'github-actions[bot]' && i.body?.includes(MARKER));
+  const dashboard = allIssues.find(i => !i.pull_request && i.user?.login === 'github-actions[bot]' && i.body?.startsWith(MARKER));
   const issues = allIssues.filter(i => !i.pull_request && i.state === 'open' && i.number !== dashboard?.number);
   for (const issue of issues) issue.commentsData = await github.paginate(github.rest.issues.listComments, { ...repo, issue_number: issue.number, per_page: 100 });
   const pulls = await github.paginate(github.rest.pulls.list, { ...repo, state: 'open', per_page: 100 });

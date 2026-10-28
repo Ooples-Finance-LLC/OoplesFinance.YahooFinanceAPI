@@ -10,7 +10,8 @@ const ci = { workflow_id: 10, name: 'CI', status: 'completed', conclusion: 'fail
 const select = overrides => selectAlerts({ issues: [], pulls: [], runs: [], now, ...overrides }).map(a => a.key);
 test('thresholds and maintainer responses distinguish actionable issues', () => {
   assert.deepEqual(select({ issues: [issue] }), ['issue:157']);
-  for (const change of [{ created_at: recent }, { state: 'closed' }, { author_association: 'OWNER' }, { commentsData: [{ author_association: 'MEMBER' }] }, { body: '<!-- yahoo-daily-triage -->' }])
+  assert.deepEqual(select({ issues: [{ ...issue, body: '<!-- yahoo-daily-triage -->' }] }), ['issue:157']);
+  for (const change of [{ created_at: recent }, { state: 'closed' }, { author_association: 'OWNER' }, { commentsData: [{ author_association: 'MEMBER' }] }])
     assert.deepEqual(select({ issues: [{ ...issue, ...change }] }), []);
 });
 test('PR reviews cover only the reviewed commits and drafts are excluded', () => {
